@@ -7,6 +7,9 @@ var app = express();
 //déclaration du port
 var port = process.env.PORT || 3000;
 
+//pour proteger les injection
+var sanitizer = require("express-sanitizer");
+
 //déclaration de ce que l'app utilise comme module
 app.use(sanitizer());
 app.use(bodyParser.json());
