@@ -1,14 +1,16 @@
 require("dotenv").config();
-/*
+
+console.log(process.env.DB_NAME)
+
 //bd du site
-/*const Sequelize = require("sequelize");
+const Sequelize = require("sequelize");
 const db = {};
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
   process.env.DB_PASSWORD,
   {
-    host: process.env.DB_HOST,
+    host: process.env.HOST,
     dialect: "mysql",
     operatorsAliases: false,
 
@@ -20,14 +22,15 @@ const sequelize = new Sequelize(
     },
   }
 );
+console.log(sequelize)
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;*/
+module.exports = db;
 
 
 //local
-const Sequelize = require("sequelize");
+/*const Sequelize = require("sequelize");
 const db = {};
 const sequelize = new Sequelize(
     process.env.DB_NAME_LOCAL,
@@ -49,4 +52,4 @@ const sequelize = new Sequelize(
 
 db.sequelize = sequelize;
 
-module.exports = db;
+module.exports = db;*/

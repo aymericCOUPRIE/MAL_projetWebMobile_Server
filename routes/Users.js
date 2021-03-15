@@ -12,14 +12,14 @@ users.use(cors());
 users.post("/login", (req, res) => {
     User.findOne({
         where: {
-            email: req.sanitize(req.body.email),
+            user_email: req.sanitize(req.body.email),
         },
     })
         .then((user) => {
             if (!user) {
                 res.json({ error: "Email incorrect" });
             } else {
-                if (bcrypt.compareSync(req.sanitize(req.body.password), user.password)) {
+                if (bcrypt.compareSync(req.sanitize(req.body.password), user.user_motDePasse)) {
                     let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
                         expiresIn: Math.floor(Date.now() / 1000) + 60 * 60,
                     });
@@ -33,3 +33,5 @@ users.post("/login", (req, res) => {
             res.send("error: " + err);
         });
 });
+
+module.exports = users

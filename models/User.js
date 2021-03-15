@@ -1,11 +1,12 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 
-module.exports = db.sequelize.define(
+var User = db.sequelize.define(
     'user',
     {
         user_email:{
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            primaryKey: true
         },
         user_motDePasse:{
             type: Sequelize.STRING
@@ -15,7 +16,10 @@ module.exports = db.sequelize.define(
         }
     },
     {
-        timestamps: false
+        timestamps: false,
+        tableName: 'user',
+        freezeTableName: true
     }
-
 )
+
+module.exports = User
