@@ -7,8 +7,11 @@ var app = express();
 //déclaration du port
 var port = process.env.PORT || 3000;
 
+//pour proteger les injection
+var sanitizer = require("express-sanitizer");
+
 //déclaration de ce que l'app utilise comme module
-//app.use(sanitizer());
+app.use(sanitizer());
 app.use(bodyParser.json());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -17,12 +20,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const dotenv = require("dotenv");
 dotenv.config();
 
-const db = require("./database/db.js");
-app.get("/", (req, res) => {
-    db.sequelize;
-})
+//déclaration des routes
+var Users = require("./routes/Users");
+
+app.use("/server", Users);
+
 //lancement serveur
 app.listen(port, function () {
     console.log("Server is running on port " + port);
-    console.log(db.sequelize);
 });
