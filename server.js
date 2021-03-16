@@ -25,8 +25,11 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 //déclaration des routes
-var Users = require("./routes/Users");
+const Users = require("./routes/Users");
 app.use("/server", Users);
+
+const Societes = require('./routes/Societes');
+app.use('/societe', Societes);
 
 //lancement serveur
 app.listen(port, function () {
