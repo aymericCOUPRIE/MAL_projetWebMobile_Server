@@ -17,7 +17,7 @@ module.exports = db.sequelize.define(
             type: Sequelize.FLOAT
         },
         fes_nom : {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(100)
         }
     },
     {

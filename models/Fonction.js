@@ -11,7 +11,7 @@ module.exports = db.sequelize.define(
             autoIncrement: true
         },
         fonc_libelle : {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(50)
         }
     },
     {

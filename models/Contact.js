@@ -11,27 +11,27 @@ module.exports = db.sequelize.define(
             autoIncrement: true
         },
         co_nom : {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(100)
         },
         co_prenom : {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(100)
         },
         co_telFixe : {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(20)
         },
         co_telPortable : {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(20)
         },
         co_principal : {
             type: Sequelize.BOOLEAN
         },
-        co_fonction : { // foreign key
-            type: Sequelize.INTEGER,
-            referencesKey: 'fonc_id'
+        fonc_id : { // foreign key
+            type: Sequelize.INTEGER
+            //referencesKey: 'fonc_id'
         },
-        co_societe : { // foreign key
-            type: Sequelize.INTEGER,
-            referencesKey: 'soc_id'
+        soc_id : { // foreign key
+            type: Sequelize.INTEGER
+            //referencesKey: 'soc_id'
         }
     },
     {

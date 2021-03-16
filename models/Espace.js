@@ -13,10 +13,10 @@ module.exports = db.sequelize.define(
         esp_qte : {
             type: Sequelize.FLOAT
         },
-        esp_localisation : { // foreign key
+        loc_id : { // foreign key
             type: Sequelize.INTEGER
         },
-        esp_reservation : { // foreign key
+        res_id : { // foreign key
             type: Sequelize.INTEGER
         }
     },
@@ -26,3 +26,4 @@ module.exports = db.sequelize.define(
 )
 
 espace.hasOne(localisation, {foreignKey: 'loc_id'})
+espace.hasOne(reservation, {foreignKey: 'res_id'})
