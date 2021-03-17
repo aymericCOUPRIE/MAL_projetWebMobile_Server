@@ -1,4 +1,3 @@
-//sequelize remplace les requêtes sql
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 
@@ -34,8 +33,14 @@ module.exports = db.sequelize.define(
         }
     },
     {
-        timestamps: false
+        timestamps: false,
+        tableName: 'jeu',
+        freezeTableName: true
     }
 )
 
 jeu.hasOne(type_jeu, {foreignKey: 'typJ_id'})
+
+jeu.associate = (models) => {
+    belongToMany(models.suivi_jeu, {foreignKey: 'j_id'})
+}

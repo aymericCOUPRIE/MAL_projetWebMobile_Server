@@ -1,4 +1,3 @@
-//sequelize remplace les requêtes sql
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 
@@ -21,7 +20,9 @@ module.exports = db.sequelize.define(
         }
     },
     {
-        timestamps: false
+        timestamps: false,
+        tableName: 'espace',
+        freezeTableName: true
     }
 )
 

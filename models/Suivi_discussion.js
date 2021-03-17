@@ -2,24 +2,24 @@ const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 
 module.exports = db.sequelize.define(
-    'fonction',
+    'suivi_discussion',
     {
-        fonc_id: {
+        suivD_id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        fonc_libelle : {
+        suivD_libelle : {
             type: Sequelize.STRING(50)
         }
     },
     {
         timestamps: false,
-        tableName: 'fonction',
+        tableName: 'suivi_discussion',
         freezeTableName: true
     }
 )
 
-fonction.associate = (models) => {
-    belongToMany(models.contact, {foreignKey: 'fonc_id'})
+suivi_discussion.associate = (models) => {
+    belongToMany(models.suivi_exposant, {foreignKey: 'suivD_id'})
 }

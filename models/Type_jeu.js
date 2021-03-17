@@ -2,24 +2,24 @@ const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 
 module.exports = db.sequelize.define(
-    'fonction',
+    'type_jeu',
     {
-        fonc_id: {
+        typJ_id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        fonc_libelle : {
+        typJ_libelle : {
             type: Sequelize.STRING(50)
         }
     },
     {
         timestamps: false,
-        tableName: 'fonction',
+        tableName: 'type_jeu',
         freezeTableName: true
     }
 )
 
-fonction.associate = (models) => {
-    belongToMany(models.contact, {foreignKey: 'fonc_id'})
+type_jeu.associate = (models) => {
+    belongToMany(models.jeu, {foreignKey: 'typJ_id'})
 }

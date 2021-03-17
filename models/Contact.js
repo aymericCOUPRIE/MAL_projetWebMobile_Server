@@ -1,4 +1,3 @@
-//sequelize remplace les requêtes sql
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 
@@ -27,15 +26,15 @@ module.exports = db.sequelize.define(
         },
         fonc_id : { // foreign key
             type: Sequelize.INTEGER
-            //referencesKey: 'fonc_id'
         },
         soc_id : { // foreign key
             type: Sequelize.INTEGER
-            //referencesKey: 'soc_id'
         }
     },
     {
-        timestamps: false
+        timestamps: false,
+        tableName: 'contact',
+        freezeTableName: true
     }
 )
 
