@@ -13,20 +13,12 @@ societes.get('/affichage', (req, res) => {
 
 
 societes.put("/updateStatus", (req, res) => {
-
-    var soc_estInactif
-    if (req.body.soc_estInactif == "true") {
-        soc_estInactif = 1
-    } else {
-        soc_estInactif = 0
-    }
-
     Societe.update(
         {
-            soc_estInactif: soc_estInactif
+            soc_estInactif: req.body.soc_estInactif ===  'true' ? 1 : 0
         },
         {
-            where: {soc_id: req.body.soc_id+1}
+            where: {soc_id: req.body.soc_id}
         }
     ).then((response) => {
         console.log(response)
