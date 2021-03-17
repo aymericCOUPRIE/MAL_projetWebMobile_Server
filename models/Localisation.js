@@ -2,24 +2,30 @@ const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 
 module.exports = db.sequelize.define(
-    'fonction',
+    'localisation',
     {
-        fonc_id: {
+        loc_id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        fonc_libelle : {
+        loc_prixTable : {
+            type: Sequelize.FLOAT
+        },
+        loc_prixM2 : {
+            type: Sequelize.FLOAT
+        },
+        loc_libelle : {
             type: Sequelize.STRING(50)
         }
     },
     {
         timestamps: false,
-        tableName: 'fonction',
+        tableName: 'localisation',
         freezeTableName: true
     }
 )
 
-fonction.associate = (models) => {
-    belongToMany(models.contact, {foreignKey: 'fonc_id'})
+localisation.associate = (models) => {
+    belongToMany(models.espace, {foreignKey: 'loc_id'})
 }
