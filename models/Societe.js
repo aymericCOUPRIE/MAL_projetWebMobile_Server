@@ -33,7 +33,7 @@ const Societe = db.sequelize.define(
     }
 );
 
-societe.associate = (models) => {
+Societe.associate = (models) => {
     belongToMany(models.reservation, {foreignKey: 'soc_id'});
     belongToMany(models.role_festival, {foreignKey: 'soc_id'})
 }
