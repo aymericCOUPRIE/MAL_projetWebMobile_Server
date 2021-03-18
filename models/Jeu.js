@@ -30,6 +30,9 @@ module.exports = db.sequelize.define(
         },
         typJ_id : { // foreign key
             type: Sequelize.INTEGER
+        },
+        soc_id : { // foreign key
+            type: Sequelize.INTEGER
         }
     },
     {
@@ -40,6 +43,7 @@ module.exports = db.sequelize.define(
 )
 
 jeu.hasOne(type_jeu, {foreignKey: 'typJ_id'})
+jeu.hasOne(societe, {foreignKey: 'soc_id'})
 
 jeu.associate = (models) => {
     belongToMany(models.suivi_jeu, {foreignKey: 'j_id'})
