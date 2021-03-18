@@ -34,8 +34,8 @@ const Societe = db.sequelize.define(
 );
 
 Societe.associate = (models) => {
-    belongToMany(models.reservation, {foreignKey: 'soc_id'});
-    belongToMany(models.role_festival, {foreignKey: 'soc_id'})
+//    belongToMany(models.reservation, {foreignKey: 'soc_id'});
+    belongToMany(models.role_festival, {foreignKey: 'rolF_societe'})
 }
 
 module.exports = Societe
