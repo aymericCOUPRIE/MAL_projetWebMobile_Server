@@ -1,19 +1,22 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 
-module.exports = db.sequelize.define(
+const Societe = require("../models/Societe")
+const Festival = require("../models/Festival")
+
+const Role_festival = db.sequelize.define(
     'role_festival',
     {
         rolF_estExposant: {
             type: Sequelize.INTEGER
         },
-        rolF_estEditeur : {
+        rolF_estEditeur: {
             type: Sequelize.INTEGER
         },
-        soc_id : { // foreign key
+        soc_id: { // foreign key
             type: Sequelize.INTEGER
         },
-        fes_id : { // foreign key
+        fes_id: { // foreign key
             type: Sequelize.INTEGER
         }
     },
@@ -24,5 +27,11 @@ module.exports = db.sequelize.define(
     }
 )
 
-role_festival.hasOne(societe, {foreignKey: 'soc_id'})
-role_festival.hasOne(festival, {foreignKey: 'fes_id'})
+//REQUIRED when there no primary key to the table
+Role_festival.removeAttribute   ('id')
+
+
+Role_festival.hasOne(Societe, {foreignKey: 'soc_id', sourceKey: 'soc_id'})
+Role_festival.hasOne(Festival, {foreignKey: 'fes_id', sourceKey: 'fes_id'})
+
+module.exports = Role_festival;

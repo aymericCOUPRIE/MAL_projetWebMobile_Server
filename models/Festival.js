@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 
-module.exports = db.sequelize.define(
+const Festival = db.sequelize.define(
     'festival',
     {
         fes_id: {
@@ -9,13 +9,13 @@ module.exports = db.sequelize.define(
             primaryKey: true,
             autoIncrement: true
         },
-        fes_date : {
+        fes_date: {
             type: Sequelize.DATEONLY
         },
-        fes_nbTables : {
+        fes_nbTables: {
             type: Sequelize.FLOAT
         },
-        fes_nom : {
+        fes_nom: {
             type: Sequelize.STRING(100)
         }
     },
@@ -26,8 +26,11 @@ module.exports = db.sequelize.define(
     }
 )
 
-festival.associate = (models) => {
-    belongToMany(models.reservation, {foreignKey: 'fes_id'});
+
+Festival.associate = (models) => {
+    //belongToMany(models.reservation, {foreignKey: 'fes_id'});
     belongToMany(models.role_festival, {foreignKey: 'fes_id'});
-    belongToMany(models.suivi_exposant, {foreignKey: 'fes_id'});
+    //belongToMany(models.suivi_exposant, {foreignKey: 'fes_id'});
 }
+
+module.exports = Festival;

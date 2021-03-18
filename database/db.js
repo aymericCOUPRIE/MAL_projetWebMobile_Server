@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-console.log(process.env.DB_NAME)
+//console.log(process.env.DB_NAME)
 
 //bd du site
 const Sequelize = require("sequelize");
@@ -22,7 +22,7 @@ const sequelize = new Sequelize(
     },
   }
 );
-console.log(sequelize)
+//console.log(sequelize)
 sequelize
     .authenticate()
     .then(() => {
