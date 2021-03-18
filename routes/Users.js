@@ -29,5 +29,28 @@ users.post("/login", (req, res) => {
     });
 });
 
+/*
+const verifyJWT = (req, res, next) => {
+    const token = req.headers["x-access-token"]
+    if (!token) {
+        res.send("There is no token")
+    } else {
+        jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+            if (err) {
+                res.send({auth: false, message: "Auth failed"})
+            } else {
+                req.user_email = decoded.user_email
+                next()
+            }
+        })
+    }
+}
+
+//vérifier si l'user est connecté
+users.get('/isUserAuth', verifyJWT, (req, res) => {
+    res.send({auth: true, message: "Auth succeeded"})
+})
+*/
+
 
 module.exports = users
