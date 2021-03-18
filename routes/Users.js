@@ -29,6 +29,43 @@ users.post("/login", (req, res) => {
     });
 });
 
+//changement mdp (put pour modifier)
+users.post("/update-password/:email", (req, res) => {
+    console.log(req.params)
+    User.findOne({
+        where: {
+            user_email: req.sanitize(req.params.email),
+        },
+    })
+        .then((user) => {
+            console.log(user)
+console.log(req.body)
+                if (bcrypt.compareSync(req.sanitize(req.body.olderPassword), user.user_motDePasse)) {
+
+                            const hash = bcrypt.hashSync(req.body.newPassword, 10);
+
+                            User.update(
+                                { user_motDePasse: hash },
+                                { where: { user_email: req.sanitize(req.params.email) } }
+                            )
+                                .then(() => {
+                                    res.json({ success: "Mot de passe modifié !" });
+                                })
+                                .catch((err) => {
+                                    res.json({error: err + "llo"});
+                                });
+
+                    } else {
+                        res.json({ error: "Mot de passe incorrect!" });
+                }
+
+        })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+});
+
+
 /*
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"]
