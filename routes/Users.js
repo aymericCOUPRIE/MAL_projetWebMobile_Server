@@ -38,8 +38,6 @@ users.post("/update-password/:email", (req, res) => {
         },
     })
         .then((user) => {
-            console.log(user)
-console.log(req.body)
                 if (bcrypt.compareSync(req.sanitize(req.body.olderPassword), user.user_motDePasse)) {
 
                             const hash = bcrypt.hashSync(req.body.newPassword, 10);
@@ -58,13 +56,45 @@ console.log(req.body)
                     } else {
                         res.json({ error: "Mot de passe incorrect!" });
                 }
-
         })
         .catch((err) => {
             res.send("error: " + err);
         });
 });
 
+//inscription
+users.post("/register", (req, res) => {
+    User.findOne({
+        where: {
+            user_email: req.sanitize(req.body.email),
+        },
+    })
+        .then((user) =>{
+            if(!user){
+                const userData = {
+                    user_email : req.sanitize(req.body.email),
+                    user_password : req.sanitize(req.body.password),
+                    user_estAdmin : req.sanitize(req.body.estAdmin),
+                };
+
+                console.log("MOT DE PASS SA MERE",req.body.password)
+                console.log("MDP DANS STRUCTURE:", userData.user_password)
+                const hash = bcrypt.hashSync(userData.user_password, 10);
+
+                userData.user_password = hash;
+
+                console.log("MDP HAS SA MERE", userData.user_password)
+
+                User.create(userData) //equivalent de INSERT INTO en sql
+                    .then((user) => {
+                        console.log("USER CREE",user);
+                        res.json({ success: "Compte crée avec succès !" });
+                    })
+            }else{
+                res.json({error: "Cette adresse mail est déjà utilisé"});
+            }
+        })
+});
 
 /*
 const verifyJWT = (req, res, next) => {
