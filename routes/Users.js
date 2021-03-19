@@ -73,21 +73,19 @@ users.post("/register", (req, res) => {
             if(!user){
                 const userData = {
                     user_email : req.sanitize(req.body.email),
-                    user_password : req.sanitize(req.body.password),
+                    user_motDePasse : req.sanitize(req.body.password),
                     user_estAdmin : req.sanitize(req.body.estAdmin),
                 };
 
-                console.log("MOT DE PASS SA MERE",req.body.password)
-                console.log("MDP DANS STRUCTURE:", userData.user_password)
-                const hash = bcrypt.hashSync(userData.user_password, 10);
+                const hash = bcrypt.hashSync(userData.user_motDePasse, 10);
 
-                userData.user_password = hash;
+                userData.user_motDePasse = hash;
 
                 console.log("MDP HAS SA MERE", userData.user_password)
 
                 User.create(userData) //equivalent de INSERT INTO en sql
                     .then((user) => {
-                        console.log("USER CREE",user);
+                   
                         res.json({ success: "Compte crée avec succès !" });
                     })
             }else{
