@@ -1,7 +1,12 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
+const societe = require('./Societe')
+const type_jeu = require('./Type_jeu')
+const suivi_jeu = require('./Suivi_jeu')
 
-module.exports = db.sequelize.define(
+
+
+const Jeu = db.sequelize.define(
     'jeu',
     {
         j_id: {
@@ -18,10 +23,10 @@ module.exports = db.sequelize.define(
         j_duree : {
             type: Sequelize.INTEGER
         },
-        j_nbMaxJoueur : {
+        j_nbMaxJoueurs : {
             type: Sequelize.INTEGER
         },
-        j_nbJoueurMin : {
+        j_nbMinJoueurs : {
             type: Sequelize.INTEGER
         },
         j_lienNotice : {
@@ -40,11 +45,13 @@ module.exports = db.sequelize.define(
         tableName: 'jeu',
         freezeTableName: true
     }
-)
+);
 
-jeu.hasOne(type_jeu, {foreignKey: 'typJ_id'})
-jeu.hasOne(societe, {foreignKey: 'soc_id'})
+Jeu.hasOne(type_jeu, {foreignKey: 'typJ_id'})
+Jeu.hasOne(societe, {foreignKey: 'soc_id'})
 
-jeu.associate = (models) => {
+Jeu.associate = (models) => {
     belongToMany(models.suivi_jeu, {foreignKey: 'j_id'})
 }
+
+module.exports = Jeu

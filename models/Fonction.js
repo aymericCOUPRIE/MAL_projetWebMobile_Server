@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
+const contact = require('./Contact')
 
 module.exports = db.sequelize.define(
     'fonction',

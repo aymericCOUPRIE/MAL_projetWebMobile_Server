@@ -81,13 +81,13 @@ users.post("/register", (req, res) => {
 
                 userData.user_motDePasse = hash;
 
-                console.log("MDP HAS SA MERE", userData.user_password)
-
                 User.create(userData) //equivalent de INSERT INTO en sql
                     .then((user) => {
-
                         res.json({ success: "Compte crée avec succès !" });
                     })
+                    .catch((err) => {
+                        res.json("error: " + err);
+                    });
             }else{
                 res.json({error: "Cette adresse mail est déjà utilisé"});
             }

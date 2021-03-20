@@ -1,7 +1,9 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
+const fonction = require('./Fonction')
+const societe = require('./Societe')
 
-module.exports = db.sequelize.define(
+const Contact = db.sequelize.define(
     'contact',
     {
         co_id: {
@@ -38,5 +40,5 @@ module.exports = db.sequelize.define(
     }
 )
 
-contact.hasOne(fonction, {foreignKey: 'fonc_id'})
-contact.hasOne(societe, {foreignKey: 'soc_id'})
+Contact.hasOne(fonction, {foreignKey: 'fonc_id'})
+Contact.hasOne(societe, {foreignKey: 'soc_id'})

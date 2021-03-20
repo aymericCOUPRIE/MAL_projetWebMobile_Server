@@ -1,5 +1,8 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
+const festival = require("./Festival")
+const societe = require("./Societe")
+
 
 module.exports = db.sequelize.define(
     'reservation',

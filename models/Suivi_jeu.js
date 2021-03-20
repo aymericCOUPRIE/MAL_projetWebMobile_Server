@@ -1,7 +1,10 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
+const zone = require('./Zone')
+const jeu = require('./Jeu')
 
-module.exports = db.sequelize.define(
+
+const Suivi_jeu = db.sequelize.define(
     'suivi_jeu',
     {
         suivJ_id: {
@@ -39,7 +42,9 @@ module.exports = db.sequelize.define(
         tableName: 'suivi_jeu',
         freezeTableName: true
     }
-)
+);
 
-suivi_jeu.hasOne(zone, {foreignKey: 'zo_id'})
-suivi_jeu.hasOne(jeu, {foreignKey: 'j_id'})
+//Suivi_jeu.hasOne(zone, {foreignKey: 'zo_id'})
+//Suivi_jeu.hasOne(jeu, {foreignKey: 'j_id'})
+
+module.exports = Suivi_jeu

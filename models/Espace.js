@@ -1,7 +1,9 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
+const localisation = require('./Localisation')
+const reservation = require('./Reservation')
 
-module.exports = db.sequelize.define(
+const espace = db.sequelize.define(
     'espace',
     {
         esp_id: {

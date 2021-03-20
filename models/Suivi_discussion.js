@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
+const suivi_exposant = require("./Suivi_exposant")
 
 module.exports = db.sequelize.define(
     'suivi_discussion',

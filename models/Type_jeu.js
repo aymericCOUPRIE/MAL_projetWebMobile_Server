@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
+const jeu = require('./Jeu')
 
-module.exports = db.sequelize.define(
+const Type_jeu = db.sequelize.define(
     'type_jeu',
     {
         typJ_id: {
@@ -18,8 +19,10 @@ module.exports = db.sequelize.define(
         tableName: 'type_jeu',
         freezeTableName: true
     }
-)
+);
 
-type_jeu.associate = (models) => {
+Type_jeu.associate = (models) => {
     belongToMany(models.jeu, {foreignKey: 'typJ_id'})
 }
+
+module.exports = Type_jeu
