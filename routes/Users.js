@@ -12,6 +12,7 @@ users.post("/login", (req, res) => {
             user_email: req.sanitize(req.body.email),
         },
     }).then((user) => {
+        console.log(user)
         if (!user) {
             res.json({error: "Email incorrect"});
         } else {

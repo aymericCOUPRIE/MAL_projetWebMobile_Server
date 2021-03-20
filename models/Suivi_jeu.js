@@ -1,8 +1,5 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
-const zone = require('./Zone')
-const jeu = require('./Jeu')
-
 
 const Suivi_jeu = db.sequelize.define(
     'suivi_jeu',
@@ -12,28 +9,28 @@ const Suivi_jeu = db.sequelize.define(
             primaryKey: true,
             autoIncrement: true
         },
-        suivJ_nbJeuxRecus : {
+        suivJ_nbJeuxRecus: {
             type: Sequelize.INTEGER
         },
-        suivJ_nbJeuxExposes : {
+        suivJ_nbJeuxExposes: {
             type: Sequelize.INTEGER
         },
-        suivJ_place : {
+        suivJ_place: {
             type: Sequelize.BOOLEAN
         },
-        suivJ_dateSaisie : {
+        suivJ_dateSaisie: {
             type: Sequelize.DATEONLY
         },
-        suivJ_tombola : {
+        suivJ_tombola: {
             type: Sequelize.BOOLEAN
         },
-        suivJ_dotation : {
+        suivJ_dotation: {
             type: Sequelize.BOOLEAN
         },
-        zo_id : { // foreign key
+        zo_id: { // foreign key
             type: Sequelize.INTEGER
         },
-        j_id : { // foreign key
+        j_id: { // foreign key
             type: Sequelize.INTEGER
         }
     },
@@ -44,7 +41,8 @@ const Suivi_jeu = db.sequelize.define(
     }
 );
 
-//Suivi_jeu.hasOne(zone, {foreignKey: 'zo_id'})
-//Suivi_jeu.hasOne(jeu, {foreignKey: 'j_id'})
-
+Suivi_jeu.associate = (models) => {
+    hasOne(models.zone, {foreignKey: 'zo_id'})
+    hasOne(models.jeu, {foreignKey: 'j_id'})
+}
 module.exports = Suivi_jeu

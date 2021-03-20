@@ -1,8 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
-const suivi_exposant = require("./Suivi_exposant")
 
-const suivi_discution = db.sequelize.define(
+const Suivi_discussion = db.sequelize.define(
     'suivi_discussion',
     {
         suivD_id: {
@@ -10,7 +9,7 @@ const suivi_discution = db.sequelize.define(
             primaryKey: true,
             autoIncrement: true
         },
-        suivD_libelle : {
+        suivD_libelle: {
             type: Sequelize.STRING(50)
         }
     },
@@ -21,8 +20,8 @@ const suivi_discution = db.sequelize.define(
     }
 )
 
-suivi_discussion.associate = (models) => {
+Suivi_discussion.associate = (models) => {
     belongToMany(models.suivi_exposant, {foreignKey: 'suivD_id'})
 }
 
-module.exports = suivi_discution
+module.exports = Suivi_discussion

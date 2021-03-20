@@ -29,7 +29,7 @@ const Users = require("./routes/Users");
 app.use("/server", Users);
 
 const Societes = require('./routes/Societes');
-app.use('/societe', Societes);
+app.use('/server/societe', Societes);
 
 const Festivals = require('./routes/Festivals');
 app.use("/server/festivals",Festivals);

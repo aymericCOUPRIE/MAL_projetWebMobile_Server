@@ -1,9 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
-const suivi_discussion = require('./Suivi_discussion')
-const festival = require('./Festival')
 
-const suivi_exposant = db.sequelize.define(
+const Suivi_exposant = db.sequelize.define(
     'suivi_exposant',
     {
         suivE_id: {
@@ -11,28 +9,28 @@ const suivi_exposant = db.sequelize.define(
             primaryKey: true,
             autoIncrement: true
         },
-        suivE_benevole : {
+        suivE_benevole: {
             type: Sequelize.BOOLEAN
         },
-        suivE_nbBenevoles : {
+        suivE_nbBenevoles: {
             type: Sequelize.INTEGER
         },
-        suivE_deplacement : {
+        suivE_deplacement: {
             type: Sequelize.BOOLEAN
         },
-        suivE_dateContact1 : {
+        suivE_dateContact1: {
             type: Sequelize.DATEONLY
         },
-        suivE_dateContact2 : {
+        suivE_dateContact2: {
             type: Sequelize.DATEONLY
         },
-        suivE_dateContact3 : {
+        suivE_dateContact3: {
             type: Sequelize.DATEONLY
         },
-        suivD_id : { // foreign key
+        suivD_id: { // foreign key
             type: Sequelize.INTEGER
         },
-        fes_id : { // foreign key
+        fes_id: { // foreign key
             type: Sequelize.INTEGER
         }
     },
@@ -43,7 +41,10 @@ const suivi_exposant = db.sequelize.define(
     }
 )
 
-suivi_exposant.hasOne(suivi_discussion, {foreignKey: 'suivD_id'});
-suivi_exposant.hasOne(festival, {foreignKey: 'fes_id'})
+Suivi_exposant.associate = (models) => {
+    hasOne(models.societe, {foreignKey: 'soc_id'})
+    hasOne(models.suivi_discussion, {foreignKey: 'suivD_id'});
+    hasOne(models.festival, {foreignKey: 'fes_id'})
+}
 
-module.exports = suivi_exposant
+module.exports = Suivi_exposant

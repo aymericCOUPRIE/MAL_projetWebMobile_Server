@@ -1,10 +1,8 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
-const festival = require("./Festival")
-const societe = require("./Societe")
 
 
-const reservation = db.sequelize.define(
+const Reservation = db.sequelize.define(
     'reservation',
     {
         res_id: {
@@ -12,37 +10,37 @@ const reservation = db.sequelize.define(
             primaryKey: true,
             autoIncrement: true
         },
-        res_commentaire : {
+        res_commentaire: {
             type: Sequelize.TEXT
         },
-        res_facture : {
+        res_facture: {
             type: Sequelize.BOOLEAN
         },
-        res_paiement : {
+        res_paiement: {
             type: Sequelize.BOOLEAN
         },
-        res_prixNegocie : {
+        res_prixNegocie: {
             type: Sequelize.FLOAT
         },
-        res_envoiDebut : {
+        res_envoiDebut: {
             type: Sequelize.BOOLEAN
         },
-        res_recu : {
+        res_recu: {
             type: Sequelize.BOOLEAN
         },
-        res_aRetourner : {
+        res_aRetourner: {
             type: Sequelize.BOOLEAN
         },
-        res_renvoiFin : {
+        res_renvoiFin: {
             type: Sequelize.BOOLEAN
         },
-        res_prixRetour : {
+        res_prixRetour: {
             type: Sequelize.FLOAT
         },
-        fes_id : { // foreign key
+        fes_id: { // foreign key
             type: Sequelize.INTEGER
         },
-        soc_id : { // foreign key
+        soc_id: { // foreign key
             type: Sequelize.INTEGER
         }
     },
@@ -53,7 +51,9 @@ const reservation = db.sequelize.define(
     }
 )
 
-reservation.hasOne(festival, {foreignKey: 'fes_id'})
-reservation.hasOne(societe, {foreignKey: 'soc_id'})
+Reservation.associate = (models) => {
+    hasOne(models.festival, {foreignKey: 'fes_id'})
+    hasOne(models.societe, {foreignKey: 'soc_id'})
+}
 
-module.exports = reservation
+module.exports = Reservation
