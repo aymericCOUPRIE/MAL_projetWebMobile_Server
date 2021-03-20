@@ -41,10 +41,12 @@ const Suivi_exposant = db.sequelize.define(
     }
 )
 
+
 Suivi_exposant.associate = (models) => {
     hasOne(models.societe, {foreignKey: 'soc_id'})
     hasOne(models.suivi_discussion, {foreignKey: 'suivD_id'});
     hasOne(models.festival, {foreignKey: 'fes_id'})
 }
+
 
 module.exports = Suivi_exposant
