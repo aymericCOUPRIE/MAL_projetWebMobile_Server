@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
+const Role_festival = require("./Role_festival");
 
 const Societe = db.sequelize.define(
     'societe',

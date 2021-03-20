@@ -6,6 +6,7 @@ const sequelize = require("sequelize");
 
 const Societe = require("../models/Societe")
 const RoleFestival = require("../models/Role_festival")
+const {QueryTypes} = require("sequelize");
 
 
 societes.get('/affichage', (req, res) => {
@@ -67,6 +68,38 @@ societes.put("/updateStatusExposant", (req, res) => {
         res.send({message: 'Update réussi'})
     })
 })
+
+
+
+//tous les éditeurs
+societes.get("/allEditeurs", (req,res) => {
+    /*
+    Societe.findAll({
+                include: [RoleFestival],
+                where: { rolF_estEditeur: 1}
+
+    })*/
+    db.sequelize
+        .query(
+            "SELECT DISTINCT societe.soc_id, societe.soc_nom  FROM `societe`, role_festival WHERE role_festival.soc_id = societe.soc_id and role_festival.rolF_estEditeur=1",
+            {
+                type: QueryTypes.SELECT,
+                raw: false
+            }
+        )
+    .then((editeurs) => {
+
+        if (editeurs) {
+            res.json(editeurs);
+        } else {
+            res.send("Il n'y a pas d'éditeurs");
+        }
+    })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+})
+
 
 module.exports = societes
 

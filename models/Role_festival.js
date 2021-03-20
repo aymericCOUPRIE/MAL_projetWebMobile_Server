@@ -31,7 +31,7 @@ const Role_festival = db.sequelize.define(
 Role_festival.removeAttribute   ('id')
 
 
-Role_festival.hasOne(Societe, {foreignKey: 'soc_id', sourceKey: 'soc_id'})
-Role_festival.hasOne(Festival, {foreignKey: 'fes_id', sourceKey: 'fes_id'})
+//Role_festival.hasOne(Societe, {foreignKey: 'soc_id', sourceKey: 'soc_id'})
+//Role_festival.hasOne(Festival, {foreignKey: 'fes_id', sourceKey: 'fes_id'})
 
 module.exports = Role_festival;

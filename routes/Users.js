@@ -12,7 +12,7 @@ users.post("/login", (req, res) => {
             user_email: req.sanitize(req.body.email),
         },
     }).then((user) => {
-        console.log(user)
+
         if (!user) {
             res.json({error: "Email incorrect"});
         } else {
@@ -32,7 +32,6 @@ users.post("/login", (req, res) => {
 
 //changement mdp (put pour modifier)
 users.post("/update-password/:email", (req, res) => {
-    console.log(req.params)
     User.findOne({
         where: {
             user_email: req.sanitize(req.params.email),
