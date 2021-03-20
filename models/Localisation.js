@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 const espace = require('./Espace')
 
-module.exports = db.sequelize.define(
+const localisation = db.sequelize.define(
     'localisation',
     {
         loc_id: {
@@ -30,3 +30,5 @@ module.exports = db.sequelize.define(
 localisation.associate = (models) => {
     belongToMany(models.espace, {foreignKey: 'loc_id'})
 }
+
+module.exports = localisation

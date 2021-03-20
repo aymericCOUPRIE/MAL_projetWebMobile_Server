@@ -30,3 +30,5 @@ const espace = db.sequelize.define(
 
 espace.hasOne(localisation, {foreignKey: 'loc_id'})
 espace.hasOne(reservation, {foreignKey: 'res_id'})
+
+module.exports = espace;

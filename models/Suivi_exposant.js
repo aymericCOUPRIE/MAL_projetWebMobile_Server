@@ -3,7 +3,7 @@ const db = require("../database/db.js")
 const suivi_discussion = require('./Suivi_discussion')
 const festival = require('./Festival')
 
-module.exports = db.sequelize.define(
+const suivi_exposant = db.sequelize.define(
     'suivi_exposant',
     {
         suivE_id: {
@@ -45,3 +45,5 @@ module.exports = db.sequelize.define(
 
 suivi_exposant.hasOne(suivi_discussion, {foreignKey: 'suivD_id'});
 suivi_exposant.hasOne(festival, {foreignKey: 'fes_id'})
+
+module.exports = suivi_exposant

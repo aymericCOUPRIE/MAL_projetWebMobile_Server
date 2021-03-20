@@ -24,3 +24,5 @@ const Zone = db.sequelize.define(
 Zone.associate = (models) => {
     belongToMany(models.suivi_jeu, {foreignKey: 'zo_id'})
 }
+
+module.exports = Zone

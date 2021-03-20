@@ -4,7 +4,7 @@ const festival = require("./Festival")
 const societe = require("./Societe")
 
 
-module.exports = db.sequelize.define(
+const reservation = db.sequelize.define(
     'reservation',
     {
         res_id: {
@@ -55,3 +55,5 @@ module.exports = db.sequelize.define(
 
 reservation.hasOne(festival, {foreignKey: 'fes_id'})
 reservation.hasOne(societe, {foreignKey: 'soc_id'})
+
+module.exports = reservation

@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 const contact = require('./Contact')
 
-module.exports = db.sequelize.define(
+const fonction = db.sequelize.define(
     'fonction',
     {
         fonc_id: {
@@ -24,3 +24,5 @@ module.exports = db.sequelize.define(
 fonction.associate = (models) => {
     belongToMany(models.contact, {foreignKey: 'fonc_id'})
 }
+
+module.exports = fonction;

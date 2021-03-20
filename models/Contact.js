@@ -42,3 +42,4 @@ const Contact = db.sequelize.define(
 
 Contact.hasOne(fonction, {foreignKey: 'fonc_id'})
 Contact.hasOne(societe, {foreignKey: 'soc_id'})
+module.exports = Contact;
