@@ -85,7 +85,7 @@ users.post("/register", (req, res) => {
 
                 User.create(userData) //equivalent de INSERT INTO en sql
                     .then((user) => {
-                   
+
                         res.json({ success: "Compte crée avec succès !" });
                     })
             }else{

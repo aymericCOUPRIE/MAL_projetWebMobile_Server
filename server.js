@@ -31,6 +31,9 @@ app.use("/server", Users);
 const Societes = require('./routes/Societes');
 app.use('/societe', Societes);
 
+const Festivals = require('./routes/Festivals');
+app.use("/server/festivals",Festivals);
+
 //lancement serveur
 app.listen(port, function () {
     console.log("Server is running on port " + port);

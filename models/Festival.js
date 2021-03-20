@@ -14,9 +14,6 @@ const Festival = db.sequelize.define(
         },
         fes_nbTables: {
             type: Sequelize.FLOAT
-        },
-        fes_nom: {
-            type: Sequelize.STRING(100)
         }
     },
     {
