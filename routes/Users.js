@@ -50,7 +50,7 @@ users.post("/update-password/:email", (req, res) => {
                                     res.json({ success: "Mot de passe modifié !" });
                                 })
                                 .catch((err) => {
-                                    res.json({error: err + "llo"});
+                                    res.json({error: err});
                                 });
 
                     } else {
