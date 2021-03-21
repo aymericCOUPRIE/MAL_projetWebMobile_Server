@@ -10,9 +10,6 @@ const Reservation = db.sequelize.define(
             primaryKey: true,
             autoIncrement: true
         },
-        res_commentaire: {
-            type: Sequelize.TEXT
-        },
         res_facture: {
             type: Sequelize.BOOLEAN
         },
