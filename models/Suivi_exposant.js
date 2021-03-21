@@ -32,7 +32,10 @@ const Suivi_exposant = db.sequelize.define(
         },
         fes_id: { // foreign key
             type: Sequelize.INTEGER
-        }
+        },
+        suivE_commentaire: {
+            type: Sequelize.TEXT
+        },
     },
     {
         timestamps: false,

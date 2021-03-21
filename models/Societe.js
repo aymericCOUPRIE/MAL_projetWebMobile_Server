@@ -2,13 +2,15 @@ const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 const Role_festival = require("./Role_festival");
 
-const Societe = db.sequelize.define(
+//const role_festival = require("./Role_festival")
+
+const societe = db.sequelize.define(
     'societe',
     {
         soc_id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
-            autoIncrement: true
+            autoIncrement: true,
         },
         soc_nom: {
             type: Sequelize.STRING
@@ -29,15 +31,15 @@ const Societe = db.sequelize.define(
     {
         timestamps: false,
         tableName: 'societe',
-        freezeTableName: true
+        freezeTableName: true,
     }
 );
 
-Societe.associate = (models) => {
-    belongToMany(models.reservation, {foreignKey: 'soc_id'});
-    belongToMany(models.role_festival, {foreignKey: 'soc_id'});
-    belongToMany(models.jeu, {foreignKey: 'soc_id'})
-    belongToMany(models.suivi_exposant, {foreignKey: 'soc_id'})
+societe.associate = (models) => {
+    //belongTo(models.reservation, {foreignKey: 'soc_id'});
+    belongTo(models.role_festival, {foreignKey: 'FK_societe_roleFestival'});
+    //belongTo(models.jeu, {foreignKey: 'soc_id'})
+    //belongTo(models.suivi_exposant, {foreignKey: 'soc_id'})
 }
 
-module.exports = Societe
+module.exports = societe
