@@ -71,7 +71,7 @@ societes.put("/updateStatusExposant", (req, res) => {
 
 
 
-//tous les éditeurs
+//tous les éditeurs (id et nom)
 societes.get("/allEditeurs", (req,res) => {
     /*
     Societe.findAll({

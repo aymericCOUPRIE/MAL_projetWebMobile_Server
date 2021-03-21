@@ -73,5 +73,23 @@ festivals.get("/closest", (req, res) => {
     });
 });
 
+//festival by id
+festivals.get("/:fes_id", (req,res) =>{
+    Festival.findOne({
+        where:{
+            fes_id: req.sanitize(req.params.fes_id),
+        },
+    })
+        .then((festival) => {
+            if (!festival) {
+                res.json({error: "Aucun festival ne correspond à cet identifiant"});
+            } else {
+                res.json({festival: festival});
+            }
+        }).catch((err) => {
+        res.send("error: " + err);
+    });
+})
+
 
 module.exports = festivals;
