@@ -26,6 +26,9 @@ const societe = db.sequelize.define(
         },
         soc_codePostal: {
             type: Sequelize.STRING
+        },
+        soc_pays: {
+            type: Sequelize.STRING
         }
     },
     {

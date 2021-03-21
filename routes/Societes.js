@@ -45,8 +45,8 @@ societes.get('/affichage', (req, res) => {
 societes.put("/updateStatusInactif", (req, res) => {
     //console.log("REQ BODY", req.body)
     Societe.update(
-        {soc_estInactif: req.body.soc_estInactif},
-        {where: {soc_id: req.body.soc_id}}
+        {soc_estInactif: req.sanitize(req.body.soc_estInactif)},
+        {where: {soc_id: req.sanitize(req.body.soc_id)}}
     ).then((response) => {
         //console.log(response)
         res.send({message: 'Update réussi'})
@@ -57,8 +57,8 @@ societes.put("/updateStatusInactif", (req, res) => {
 societes.put("/updateStatusEditeur", (req, res) => {
     //console.log("REQ BODY", req.body)
     RoleFestival.update(
-        {rolF_estEditeur: req.body.rolF_estEditeur},
-        {where: {soc_id: req.body.soc_id, fes_id: req.body.fes_id}}
+        {rolF_estEditeur: req.sanitize(req.body.rolF_estEditeur)},
+        {where: {soc_id: req.sanitize(req.body.soc_id), fes_id: req.sanitize(req.body.fes_id)}}
     ).then((response) => {
         //console.log(response)
         res.send({message: 'Update réussi'})
@@ -69,8 +69,8 @@ societes.put("/updateStatusEditeur", (req, res) => {
 societes.put("/updateStatusExposant", (req, res) => {
     //console.log("REQ", req.body)
     RoleFestival.update(
-        {rolF_estExposant: req.body.rolF_estExposant},
-        {where: {soc_id: req.body.soc_id, fes_id: req.body.fes_id}}
+        {rolF_estExposant: req.sanitize(req.body.rolF_estExposant)},
+        {where: {soc_id: req.sanitize(req.body.soc_id), fes_id: req.sanitize(req.body.fes_id)}}
     ).then((response) => {
         //console.log(response)
         res.send({message: 'Update réussi'})
@@ -80,8 +80,8 @@ societes.put("/updateStatusExposant", (req, res) => {
 societes.put("/updateDateContact1", (req, res) => {
     //console.log("REQ", req.body)
     SuiviExposant.update(
-        {suivE_dateContact1: req.body.suivE_dateContact},
-        {where: {suivE_id: req.body.suivE_id}}
+        {suivE_dateContact1: req.sanitize(req.body.suivE_dateContact)},
+        {where: {suivE_id: req.sanitize(req.body.suivE_id)}}
     ).then((response) => {
         //console.log(response)
         res.send({message: 'Update réussi'})
@@ -91,8 +91,8 @@ societes.put("/updateDateContact1", (req, res) => {
 societes.put("/updateDateContact2", (req, res) => {
     //console.log("REQ", req.body)
     SuiviExposant.update(
-        {suivE_dateContact2: req.body.suivE_dateContact},
-        {where: {suivE_id: req.body.suivE_id}}
+        {suivE_dateContact2: req.sanitize(req.body.suivE_dateContact)},
+        {where: {suivE_id: req.sanitize(req.body.suivE_id)}}
     ).then((response) => {
         //console.log(response)
         res.send({message: 'Update réussi'})
@@ -102,8 +102,8 @@ societes.put("/updateDateContact2", (req, res) => {
 societes.put("/updateDateContact3", (req, res) => {
     //console.log("REQ", req.body)
     SuiviExposant.update(
-        {suivE_dateContact3: req.body.suivE_dateContact},
-        {where: {suivE_id: req.body.suivE_id}}
+        {suivE_dateContact3: req.sanitize(req.body.suivE_dateContact)},
+        {where: {suivE_id: req.sanitize(req.body.suivE_id)}}
     ).then((response) => {
         //console.log(response)
         res.send({message: 'Update réussi'})
@@ -111,9 +111,8 @@ societes.put("/updateDateContact3", (req, res) => {
 })
 
 
-
 //tous les éditeurs (id et nom)
-societes.get("/allEditeurs", (req,res) => {
+societes.get("/allEditeurs", (req, res) => {
     /*
     Societe.findAll({
                 include: [RoleFestival],
@@ -128,20 +127,33 @@ societes.get("/allEditeurs", (req,res) => {
                 raw: false
             }
         )
-    .then((editeurs) => {
+        .then((editeurs) => {
 
-        if (editeurs) {
-            res.json(editeurs);
-        } else {
-            res.send("Il n'y a pas d'éditeurs");
-        }
-    })
+            if (editeurs) {
+                res.json(editeurs);
+            } else {
+                res.send("Il n'y a pas d'éditeurs");
+            }
+        })
         .catch((err) => {
             res.send("error: " + err);
         });
 })
 
+societes.post("/add", (req, res) => {
 
+    Societe.create({
+        soc_nom: req.sanitize(req.body.soc_nom),
+        soc_ville: req.sanitize(req.body.soc_ville),
+        soc_rue: req.sanitize(req.body.soc_rue),
+        soc_codePostal: req.sanitize(req.body.soc_codePostal),
+        soc_pays: req.sanitize(req.body.soc_pays)
+    }).then((response) => {
+        res.send({message: "CREATE success"})
+    }).catch((err) => {
+        res.send({message: "CREATE fail"})
+    })
+})
 module.exports = societes
 
 
