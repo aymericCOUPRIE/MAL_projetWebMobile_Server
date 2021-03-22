@@ -47,22 +47,6 @@ jeux.post('/add', (req,res) => {
 
 })
 
-//tous les types de jeu
-jeux.get('/allGameType', (req,res) => {
-    TypeJeu.findAll({
-        order: [["typJ_libelle", "ASC"]],
-    })
-        .then((types) => {
-            if (types) {
-                res.json(types);
-            } else {
-                res.send("Il n'y a pas encore de type de jeux");
-            }
-        })
-        .catch((err) => {
-            res.send("error: " + err);
-        });
-})
 
 //touts les jeux avec leurs infos
 jeux.get('/allDetails', (req,res) => {
