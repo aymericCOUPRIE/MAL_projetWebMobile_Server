@@ -31,7 +31,7 @@ jeux.post('/add', (req,res) => {
                }
                Jeu.create(gameData)
                    .then( (game) => {
-                       res.json({success: "Jeu crée avec succès!"})
+                       res.json({success: "Jeu créé avec succès!"})
                    })
                    .catch((err) => {
                        res.json("error: " + err);

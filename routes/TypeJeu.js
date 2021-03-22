@@ -18,4 +18,61 @@ typeJeu.get('/all', (req,res) => {
             res.send("error: " + err);
         });
 })
-module.exports = typeJeu
+
+//creer un type de jeu
+typeJeu.post('/add', (req,res) => {
+    TypeJeu.findOne({
+        where: {
+            typJ_libelle: req.sanitize(req.body.libelle),
+        },
+    })
+        .then((type) => {
+            if (type) {
+                res.json({error: "Ce type existe déjà.."})
+            } else {
+                const typeData = {
+                    typJ_libelle: req.sanitize(req.body.libelle),
+                }
+                TypeJeu.create(typeData)
+                    .then((type) => {
+                        res.json({success: "type créé avec succés!"})
+                    })
+                    .catch((err) => {
+                        res.json("error: " + err);
+                    });
+            }
+
+        })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+})
+
+//modifie libelle type jeu
+typeJeu.post("/:typJ_id/update",(req,res) =>{
+    TypeJeu.findOne({
+        where:{
+            typJ_id: req.sanitize(req.params.typJ_id),
+        },
+    })
+        .then((type) => {
+            if(!type){
+                res.json({error: "Ce type n'existe pas"})
+            }else{
+                TypeJeu.update(
+                    {typJ_libelle: req.sanitize(req.body.libelle)},
+                    {where: { typJ_id: req.sanitize(req.params.typJ_id)}}
+                ).then(() => {
+                    res.json({ success: " Type modifié !" });
+                })
+                    .catch((err) => {
+                        res.json({error: err});
+                    });
+            }
+        })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+})
+
+module.exports = typeJeu;
