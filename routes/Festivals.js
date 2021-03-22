@@ -37,13 +37,14 @@ festivals.post('/add', (req, res) => {
 /**
  * Method which get all the festivals
  */
-festivals.get("/affichage",(req, res) => {
+festivals.get("/show",(req, res) => {
     Festival.findAll()
         .then((festivals) => {
             if (!festivals) {
                 res.json({error: "Il n'y a aucun festival"});
             } else {
-                res.json({allFestivals: festivals});
+                //res.json({allFestivals: festivals});
+                res.send({res: festivals});
             }
         })
         .catch((err) => {
