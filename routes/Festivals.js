@@ -1,7 +1,16 @@
-const Sequelize = require('sequelize')
+const sequelize = require('sequelize')
+const db = require('../database/db')
+const {QueryTypes} = require("sequelize");
 const express = require("express");
 const festivals = express.Router();
 const Festival = require("../models/Festival");
+const Jeu = require("../models/Jeu")
+const TypeJeu = require('../models/Type_jeu')
+const Societe = require("../models/Societe")
+const RoleFestival = require("../models/Role_festival")
+const Reservation = require("../models/Reservation")
+const SuiviJeu = require("../models/Suivi_jeu")
+
 const { Op } = require('sequelize')
 
 
@@ -74,6 +83,35 @@ festivals.get("/closest", (req, res) => {
     });
 });
 
+
+//liste jeux festival le plus proche par éditeur
+//TODO  ATTENTION IL VAUT CHANGER POUR AVOIR LE FESTIVAL QUI VA ARRIVER
+festivals.get("/gameByEditor", ((req, res) => {
+    db.sequelize
+        .query(
+            "SELECT societe.soc_nom as 'nom Editeur', jeu.j_id FROM festival AS fes INNER JOIN role_festival AS role ON role.fes_id = fes.fes_id INNER JOIN reservation AS resa ON resa.fes_id = fes.fes_id AND resa.soc_id = role.soc_id INNER JOIN suivi_jeu AS suivi ON suivi.res_id = resa.res_id INNER JOIN jeu ON jeu.j_id = suivi.j_id INNER JOIN societe ON jeu.soc_id = societe.soc_id WHERE fes_date = '2021-03-21' AND role.rolF_estEditeur = 1 ORDER BY societe.soc_id",
+            {
+                type: QueryTypes.SELECT,
+                raw: false
+            }
+        )
+        .then((liste) => {
+
+            if (liste) {
+                res.json(liste);
+            } else {
+                res.send("Il y a rien pour ce festival..");
+            }
+        })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+}))
+
+
+
+
+//TODO changer la route  /:fes_id/details
 //festival by id
 festivals.get("/:fes_id", (req,res) =>{
     Festival.findOne({
@@ -91,6 +129,7 @@ festivals.get("/:fes_id", (req,res) =>{
         res.send("error: " + err);
     });
 })
+
 
 
 module.exports = festivals;
