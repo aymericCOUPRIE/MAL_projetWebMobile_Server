@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
-
+const Suivi_exposant = require('./Suivi_exposant')
 
 const Suivi_discussion = db.sequelize.define(
 
@@ -22,10 +22,15 @@ const Suivi_discussion = db.sequelize.define(
     }
 )
 
-Suivi_discussion.associate = (models) => {
-    belongToMany(models.suivi_exposant, {foreignKey: 'suivD_id'})
-}
+Suivi_discussion.associate((models) => {
+    models.Suivi_exposant.belongsTo(Suivi_discussion, {
+        foreignKey: { name: "suivD_id" },
+    });
 
+    Suivi_discussion.hasMany(models.Suivi_exposant, {
+        foreignKey: { name: "suivD_id" },
+    });
+})
 
 module.exports = Suivi_discussion
 

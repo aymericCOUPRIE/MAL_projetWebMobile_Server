@@ -21,8 +21,6 @@ const Type_jeu = db.sequelize.define(
     }
 );
 
-Type_jeu.associate = (models) => {
-    belongToMany(models.jeu, {foreignKey: 'typJ_id'})
-}
+
 
 module.exports = Type_jeu

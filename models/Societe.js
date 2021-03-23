@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
-const Role_festival = require("./Role_festival");
+const Reservation = require('./Reservation')
+const Role_festival = require('./Role_festival')
+const Suivi_exposant = require('./Suivi_exposant')
 
-//const role_festival = require("./Role_festival")
-
-const societe = db.sequelize.define(
+const Societe = db.sequelize.define(
     'societe',
     {
         soc_id: {
@@ -38,11 +38,28 @@ const societe = db.sequelize.define(
     }
 );
 
-societe.associate = (models) => {
-    //belongTo(models.reservation, {foreignKey: 'soc_id'});
-    belongTo(models.role_festival, {foreignKey: 'FK_societe_roleFestival'});
-    //belongTo(models.jeu, {foreignKey: 'soc_id'})
-    //belongTo(models.suivi_exposant, {foreignKey: 'soc_id'})
-}
+    Reservation.belongsTo(Societe, {
+        foreignKey: { name: "soc_id" },
+    });
 
-module.exports = societe
+    Societe.hasMany(Reservation, {
+        foreignKey: { name: "soc_id" },
+    });
+
+    Role_festival.belongsTo(Societe, {
+        foreignKey: { name: "soc_id"}
+    })
+
+    Societe.hasMany(Role_festival, {
+        foreignKey: { name: "soc_id" },
+    });
+
+    Suivi_exposant.belongsTo(Societe, {
+        foreignKey: { name: "soc_id" },
+    });
+
+    Societe.hasMany(Suivi_exposant, {
+        foreignKey: { name: "soc_id" },
+    });
+
+module.exports = Societe

@@ -49,9 +49,5 @@ const Reservation = db.sequelize.define(
 )
 
 
-Reservation.associate = (models) => {
-    hasOne(models.festival, {foreignKey: 'fes_id'})
-    hasOne(models.societe, {foreignKey: 'soc_id'})
-}
 
 module.exports = Reservation

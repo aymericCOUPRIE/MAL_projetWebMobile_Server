@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
-const societe = require('./Societe')
-const type_jeu = require('./Type_jeu')
-const suivi_jeu = require('./Suivi_jeu')
+const Societe = require('./Societe')
+const Type_jeu = require('./Type_jeu')
+const Suivi_jeu = require('./Suivi_jeu')
 
 
 
@@ -47,11 +47,28 @@ const Jeu = db.sequelize.define(
     }
 );
 
-Jeu.hasOne(type_jeu, {foreignKey: 'typJ_id'})
-Jeu.hasOne(societe, {foreignKey: 'soc_id'})
+Jeu.belongsTo(Type_jeu, {
+    foreignKey: { name: "typJ_id" },
+});
+Type_jeu.hasMany(Jeu, {
+    foreignKey: { name: "typJ_id" },
+});
 
-Jeu.associate = (models) => {
-    belongToMany(models.suivi_jeu, {foreignKey: 'j_id'})
-}
+
+Jeu.belongsTo(Societe, {
+    foreignKey: { name: "soc_id" },
+});
+Societe.hasMany(Jeu, {
+    foreignKey: { name: "soc_id" },
+});
+
+Suivi_jeu.belongsTo(Jeu, {
+    foreignKey: { name: "j_id" },
+});
+Jeu.hasMany(Suivi_jeu, {
+    foreignKey: { name: "j_id" },
+});
+
+
 
 module.exports = Jeu

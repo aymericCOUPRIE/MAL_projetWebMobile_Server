@@ -33,6 +33,9 @@ const Suivi_exposant = db.sequelize.define(
         fes_id: { // foreign key
             type: Sequelize.INTEGER
         },
+        soc_id: {// foreign key
+            type: Sequelize.INTEGER
+        },
         suivE_commentaire: {
             type: Sequelize.TEXT
         },
@@ -43,13 +46,6 @@ const Suivi_exposant = db.sequelize.define(
         freezeTableName: true
     }
 )
-
-
-Suivi_exposant.associate = (models) => {
-    hasOne(models.societe, {foreignKey: 'soc_id'})
-    hasOne(models.suivi_discussion, {foreignKey: 'suivD_id'});
-    hasOne(models.festival, {foreignKey: 'fes_id'})
-}
 
 
 module.exports = Suivi_exposant

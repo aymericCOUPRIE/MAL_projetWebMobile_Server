@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
-const localisation = require('./Localisation')
-const reservation = require('./Reservation')
+const Localisation = require('./Localisation')
+const Reservation = require('./Reservation')
 
-const espace = db.sequelize.define(
+const Espace = db.sequelize.define(
     'espace',
     {
         esp_id: {
@@ -28,7 +28,20 @@ const espace = db.sequelize.define(
     }
 )
 
-espace.hasOne(localisation, {foreignKey: 'loc_id'})
-espace.hasOne(reservation, {foreignKey: 'res_id'})
+Espace.associate((models) => {
+    Espace.belongsTo(models.Localisation, {
+        foreignKey: { name: "loc_id" },
+    });
+    models.Localisation.hasMany(Espace, {
+        foreignKey: { name: "loc_id" },
+    });
+
+    models.Reservation.belongsTo(Espace, {
+        foreignKey: { name: "res_id"},
+    });
+    Espace.hasOne(models.Reservation, {
+        foreignKey: { name: "res_id" },
+    });
+})
 
 module.exports = espace;

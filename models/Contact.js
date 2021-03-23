@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
-const fonction = require('./Fonction')
-const societe = require('./Societe')
+const Societe = require('./Societe')
 
 const Contact = db.sequelize.define(
     'contact',
@@ -26,9 +25,6 @@ const Contact = db.sequelize.define(
         co_principal : {
             type: Sequelize.BOOLEAN
         },
-        fonc_id : { // foreign key
-            type: Sequelize.INTEGER
-        },
         soc_id : { // foreign key
             type: Sequelize.INTEGER
         }
@@ -40,6 +36,13 @@ const Contact = db.sequelize.define(
     }
 )
 
-Contact.hasOne(fonction, {foreignKey: 'fonc_id'})
-Contact.hasOne(societe, {foreignKey: 'soc_id'})
+Contact.associate((models) => {
+    Contact.belongsTo(models.Societe, {
+        foreignKey: { name: "soc_id" },
+    });
+    models.Societe.hasMany(Contact, {
+        foreignKey: { name: "soc_id" },
+    });
+})
+
 module.exports = Contact;

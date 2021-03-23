@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
+const Zone = require("./Zone")
 
 const Suivi_jeu = db.sequelize.define(
     'suivi_jeu',
@@ -41,8 +42,13 @@ const Suivi_jeu = db.sequelize.define(
     }
 );
 
-Suivi_jeu.associate = (models) => {
-    hasOne(models.zone, {foreignKey: 'zo_id'})
-    hasOne(models.jeu, {foreignKey: 'j_id'})
-}
+
+Suivi_jeu.belongsTo(Zone, {
+    foreignKey: { name: "zo_id" },
+});
+
+Zone.hasMany(Suivi_jeu, {
+    foreignKey: { name: "zo_id" },
+});
+
 module.exports = Suivi_jeu

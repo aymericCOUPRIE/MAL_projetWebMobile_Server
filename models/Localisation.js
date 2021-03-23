@@ -27,8 +27,5 @@ const localisation = db.sequelize.define(
     }
 )
 
-localisation.associate = (models) => {
-    belongToMany(models.espace, {foreignKey: 'loc_id'})
-}
 
 module.exports = localisation

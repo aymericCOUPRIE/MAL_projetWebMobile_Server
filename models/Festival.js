@@ -1,5 +1,8 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
+const Reservation = require('./Reservation')
+const Role_Festival = require('./Role_festival');
+const Suivi_exposant = require('./Suivi_exposant')
 
 const Festival = db.sequelize.define(
     'festival',
@@ -23,11 +26,29 @@ const Festival = db.sequelize.define(
     }
 )
 
-
 Festival.associate = (models) => {
-    belongToMany(reservation, {foreignKey: 'fes_id'});
-    belongToMany(models.role_festival, {foreignKey: 'fes_id'});
-    belongToMany(models.suivi_exposant, {foreignKey: 'fes_id'});
+
+    models.Reservation.belongsTo(models.Festival, {
+        foreignKey: {name: "fes_id"},
+    });
+    models.Festival.hasMany(models.Reservation, {
+        foreignKey: {name: "fes_id"},
+    });
+
+    models.Role_Festival.belongsTo(models.Festival, {
+        foreignKey: {name: "fes_id"},
+    });
+    models.Festival.hasMany(models.Role_Festival, {
+        foreignKey: {name: "fes_id"},
+    });
+
+
+    models.Suivi_exposant.belongsTo(models.Festival, {
+        foreignKey: {name: "fes_id"},
+    });
+    models.Festival.hasMany(models.Suivi_exposant, {
+        foreignKey: {name: "fes_id"},
+    });
 }
 
 module.exports = Festival;
