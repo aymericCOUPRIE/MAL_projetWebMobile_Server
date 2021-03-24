@@ -22,7 +22,7 @@ const Suivi_discussion = db.sequelize.define(
     }
 )
 
-Suivi_discussion.associate((models) => {
+/*Suivi_discussion.associate((models) => {
     models.Suivi_exposant.belongsTo(Suivi_discussion, {
         foreignKey: { name: "suivD_id" },
     });
@@ -30,7 +30,7 @@ Suivi_discussion.associate((models) => {
     Suivi_discussion.hasMany(models.Suivi_exposant, {
         foreignKey: { name: "suivD_id" },
     });
-})
+})*/
 
 module.exports = Suivi_discussion
 

@@ -43,6 +43,9 @@ app.use("/server/reservations", Reservations)
 const TypeJeu = require('./routes/TypeJeu')
 app.use('/server/typeJeu',TypeJeu)
 
+const SuiviExposant = require('./routes/SuiviExposant')
+app.use('/server/suiviExposant', SuiviExposant)
+
 //lancement serveur
 app.listen(port, function () {
     console.log("Server is running on port " + port);
