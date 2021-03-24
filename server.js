@@ -46,6 +46,9 @@ app.use('/server/typeJeu',TypeJeu)
 const SuiviExposant = require('./routes/SuiviExposant')
 app.use('/server/suiviExposant', SuiviExposant)
 
+const JeuxFestival = require('./routes/JeuxFestival')
+app.use('/server/jeuxFestival',JeuxFestival)
+
 //lancement serveur
 app.listen(port, function () {
     console.log("Server is running on port " + port);
