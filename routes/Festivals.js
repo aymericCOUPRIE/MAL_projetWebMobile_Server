@@ -89,6 +89,7 @@ festivals.get("/closest", (req, res) => {
 //liste jeux festival le plus proche par éditeur
 festivals.get("/gameByEditor", ((req, res) => {
 
+    /*
     Festival.findAll({
         where: {
             fes_date: {
@@ -120,7 +121,7 @@ festivals.get("/gameByEditor", ((req, res) => {
         ]
     })
 
-    /*Festival.findAll({
+    Festival.findAll({
         //le festival le plus proche
         order: [["fes_date", "ASC"]],
         where: {
@@ -162,7 +163,7 @@ festivals.get("/gameByEditor", ((req, res) => {
         },
         ]
     })*/
-    /*
+
     db.sequelize
         .query(
             "SELECT societe.soc_nom as 'nomEditeur', jeu.j_id FROM festival AS fes INNER JOIN role_festival AS role ON role.fes_id = fes.fes_id INNER JOIN reservation AS resa ON resa.fes_id = fes.fes_id AND resa.soc_id = role.soc_id INNER JOIN suivi_jeu AS suivi ON suivi.res_id = resa.res_id INNER JOIN jeu ON jeu.j_id = suivi.j_id INNER JOIN societe ON jeu.soc_id = societe.soc_id WHERE fes_date = '2021-03-21' AND role.rolF_estEditeur = 1 ORDER BY societe.soc_id",
@@ -172,7 +173,7 @@ festivals.get("/gameByEditor", ((req, res) => {
             }
         )
 
-     */
+
         .then((liste) => {
 
             if (liste) {

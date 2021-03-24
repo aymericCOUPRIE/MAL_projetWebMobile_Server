@@ -29,6 +29,9 @@ const Suivi_jeu = db.sequelize.define(
         suivJ_dotation: {
             type: Sequelize.BOOLEAN
         },
+        suivJ_prototype:{
+            type: Sequelize.BOOLEAN
+        },
         zo_id: { // foreign key
             type: Sequelize.INTEGER
         },
