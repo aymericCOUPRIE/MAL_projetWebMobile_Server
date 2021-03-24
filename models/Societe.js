@@ -3,6 +3,8 @@ const db = require("../database/db.js")
 const Reservation = require('./Reservation')
 const Role_festival = require('./Role_festival')
 const Suivi_exposant = require('./Suivi_exposant')
+const Jeu = require('./Jeu')
+const Festival = require('./Festival')
 
 const Societe = db.sequelize.define(
     'societe',
@@ -61,5 +63,21 @@ const Societe = db.sequelize.define(
     Societe.hasMany(Suivi_exposant, {
         foreignKey: { name: "soc_id" },
     });
+
+
+Jeu.belongsTo(Societe, {
+    foreignKey: { name: "soc_id" },
+});
+Societe.hasMany(Jeu, {
+    foreignKey: { name: "soc_id" },
+});
+
+Societe.belongsToMany(Festival,
+    { through: Role_festival, foreignKey: "soc_id" }
+)
+Festival.belongsToMany(Societe,
+    {
+        through: Role_festival, foreignKey: "fes_id"
+    })
 
 module.exports = Societe

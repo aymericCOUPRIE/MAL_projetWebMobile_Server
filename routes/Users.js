@@ -117,5 +117,40 @@ users.get('/isUserAuth', verifyJWT, (req, res) => {
 })
 */
 
+//récupérer tous les users
+users.get('/allUsers', (req,res) => {
+    User.findAll({
+            attributes: ["user_email","user_estAdmin"]
+    })
+
+        .then((user) => {
+
+            if (user) {
+                res.json(user);
+            } else {
+                res.send("Il n'y a pas d'utilisateurs...");
+            }
+        })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+})
+
+//delete account
+//supprimer compte
+users.delete("/delete-profile/:email", (req, res) => {
+    User.destroy({
+        where: {
+            user_email: req.sanitize(req.params.email),
+        },
+    })
+        .then(() => {
+            res.send("User deleted!");
+        })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+});
+
 
 module.exports = users

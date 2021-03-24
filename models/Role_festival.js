@@ -14,10 +14,18 @@ const Role_festival = db.sequelize.define(
             type: Sequelize.INTEGER
         },
         soc_id: { // foreign key
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            references: {
+                model: "societe",
+                key: "soc_id"
+            }
         },
         fes_id: { // foreign key
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            references: {
+                model: "festival",
+                key: "fes_id"
+            }
         }
     },
     {
@@ -26,5 +34,8 @@ const Role_festival = db.sequelize.define(
         freezeTableName: true
     }
 )
+
+//REQUIRED when there no primary key to the table
+Role_festival.removeAttribute   ('id')
 
 module.exports = Role_festival;

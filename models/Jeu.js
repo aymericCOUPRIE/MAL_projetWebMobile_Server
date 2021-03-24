@@ -55,12 +55,6 @@ Type_jeu.hasMany(Jeu, {
 });
 
 
-Jeu.belongsTo(Societe, {
-    foreignKey: { name: "soc_id" },
-});
-Societe.hasMany(Jeu, {
-    foreignKey: { name: "soc_id" },
-});
 
 Suivi_jeu.belongsTo(Jeu, {
     foreignKey: { name: "j_id" },

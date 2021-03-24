@@ -1,4 +1,4 @@
-const sequelize = require('sequelize')
+const Sequelize = require('sequelize')
 const db = require('../database/db')
 const {QueryTypes} = require("sequelize");
 const express = require("express");
@@ -85,8 +85,82 @@ festivals.get("/closest", (req, res) => {
 
 
 //liste jeux festival le plus proche par éditeur
-//TODO  ATTENTION IL VAUT CHANGER POUR AVOIR LE FESTIVAL QUI VA ARRIVER
 festivals.get("/gameByEditor", ((req, res) => {
+
+    Festival.findAll({
+        where: {
+            fes_date: {
+                [Op.gte]: Sequelize.literal('NOW()'),
+            }
+        },
+        required: true,
+        order: [["fes_date", "ASC"]],
+        include: [
+            {
+                model: Reservation,
+                required: true,
+            },
+            {
+                model: Societe,
+                required: true,
+                through: {
+                    where: {
+                        rolF_estEditeur : 1
+                    }
+                },
+                include: [
+                    {
+                        model: Jeu,
+                        required: true
+                    }
+                ]
+            },
+        ]
+    })
+
+    /*Festival.findAll({
+        //le festival le plus proche
+        order: [["fes_date", "ASC"]],
+        where: {
+            fes_date: {
+                [Op.gte]: Sequelize.literal('NOW()'),
+            }
+        },
+        limit: 1,
+        include: [{
+            model: RoleFestival,
+            attributes: [],
+            where: {
+                rolF_estEditeur : 1
+            },
+            required: true, //INER JOIN au lieu de LEFT JOIN par défaut
+            include: [
+                {
+                    model: Societe,
+                    attributes:["soc_nom"],
+                    required: true
+                }
+            ]
+        }, {
+            model: Reservation,
+            attributes: [],
+            required: true,
+            include: {
+                model: SuiviJeu,
+                attributes: [],
+                required: true,
+                include: [
+                    {
+                        model: Jeu,
+                        //je met pas attributes car je veux tout dans cette table
+                        required: true
+                    },
+                ]
+            }
+        },
+        ]
+    })*/
+    /*
     db.sequelize
         .query(
             "SELECT societe.soc_nom as 'nomEditeur', jeu.j_id FROM festival AS fes INNER JOIN role_festival AS role ON role.fes_id = fes.fes_id INNER JOIN reservation AS resa ON resa.fes_id = fes.fes_id AND resa.soc_id = role.soc_id INNER JOIN suivi_jeu AS suivi ON suivi.res_id = resa.res_id INNER JOIN jeu ON jeu.j_id = suivi.j_id INNER JOIN societe ON jeu.soc_id = societe.soc_id WHERE fes_date = '2021-03-21' AND role.rolF_estEditeur = 1 ORDER BY societe.soc_id",
@@ -95,6 +169,8 @@ festivals.get("/gameByEditor", ((req, res) => {
                 raw: false
             }
         )
+
+     */
         .then((liste) => {
 
             if (liste) {

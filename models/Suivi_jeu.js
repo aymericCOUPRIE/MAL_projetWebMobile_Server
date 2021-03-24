@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 const Zone = require("./Zone")
+const Reservation = require("./Reservation")
 
 const Suivi_jeu = db.sequelize.define(
     'suivi_jeu',
@@ -32,7 +33,18 @@ const Suivi_jeu = db.sequelize.define(
             type: Sequelize.INTEGER
         },
         j_id: { // foreign key
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            references: {
+                model: "jeu",
+                key: "j_id"
+            }
+        },
+        res_id: {
+            type: Sequelize.INTEGER,
+            references: {
+                model: "reservation",
+                key: "res_id"
+            }
         }
     },
     {
@@ -46,7 +58,6 @@ const Suivi_jeu = db.sequelize.define(
 Suivi_jeu.belongsTo(Zone, {
     foreignKey: { name: "zo_id" },
 });
-
 Zone.hasMany(Suivi_jeu, {
     foreignKey: { name: "zo_id" },
 });
