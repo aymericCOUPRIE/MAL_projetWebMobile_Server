@@ -187,7 +187,25 @@ festivals.get("/gameByEditor", ((req, res) => {
         });
 }))
 
+// to update the date of the festival
+festivals.put("/updateDate", (req, res) => {
+    Festival.update(
+        {fes_date: req.sanitize(req.body.new_date)},
+        {where: {fes_id: req.sanitize(req.body.fes_id)}}
+    ).then((response) => {
+        res.send({message: 'La date du festival a été modifiée.'})
+    })
+})
 
+// to update the number of tables of the festival
+festivals.put("/updateNbTables", (req, res) => {
+    Festival.update(
+        {fes_nbTables: req.sanitize(req.body.new_nbTables)},
+        {where: {fes_id: req.sanitize(req.body.fes_id)}}
+    ).then((response) => {
+        res.send({message: 'Le nombre de tables pour le festival a été modifié.'})
+    })
+})
 
 
 //TODO changer la route  /:fes_id/details
