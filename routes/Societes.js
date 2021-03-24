@@ -29,7 +29,6 @@ societes.get('/affichage', (req, res) => {
         "LEFT JOIN suivi_discussion as suivD ON suivEx.suivD_id = suivD.suivD_id " +
         "LEFT JOIN reservation as res ON res.soc_id = soc.soc_id AND res.fes_id = fest.fes_id " +
         "LEFT JOIN espace as esp ON esp.res_id = res.res_id",
-
         {
             type: sequelize.QueryTypes.SELECT
         }
@@ -66,7 +65,7 @@ societes.put("/updateStatusInactif", (req, res) => {
 societes.put("/updateStatusEditeur", (req, res) => {
     console.log("UPDATE EDITEUR", req.body)
     RoleFestival.update(
-        {rolF_estEditeur: req.sanitize(req.body.rolF_estEditeur ? 1 :0 )},
+        {rolF_estEditeur: req.sanitize(req.body.rolF_estEditeur ? 1 : 0)},
         {where: {soc_id: req.sanitize(req.body.soc_id), fes_id: req.sanitize(req.body.fes_id)}}
     ).then((response) => {
         //console.log(response)
@@ -79,7 +78,7 @@ societes.put("/updateStatusExposant", (req, res) => {
     console.log("UPDATE EXPOSANT", req.body)
 
     RoleFestival.update(
-        {rolF_estExposant: req.sanitize(req.body.rolF_estExposant  ? 1 :0 )},
+        {rolF_estExposant: req.sanitize(req.body.rolF_estExposant ? 1 : 0)},
         {where: {soc_id: req.sanitize(req.body.soc_id), fes_id: req.sanitize(req.body.fes_id)}}
     ).then((response) => {
         //console.log(response)
@@ -90,10 +89,29 @@ societes.put("/updateStatusExposant", (req, res) => {
 societes.put("/updateDateContact/:numeroRelance", (req, res) => {
     console.log("UPDATE DATE", req.body, req.params)
 
-    const column = `suivE_dateContact${req.sanitize(req.params.numeroRelance)}`
+    //console.log("REQ", req.body)
+    let colonne = "";
+
+    console.log("PARAMS", req.params.numeroRelance)
+    switch (req.params.numeroRelance) {
+        case "1":
+            colonne = "suivE_dateContact1";
+            break;
+        case "2":
+            colonne = "suivE_dateContact2";
+            break;
+        case "3":
+            colonne = "suivE_dateContact3";
+            break;
+        default:
+            res.send({message: "Requete impossible"})
+            return
+    }
+
+    console.log("COLONNE", colonne);
 
     SuiviExposant.update(
-        {column: req.sanitize(req.body.suivE_dateContact)},
+        {[colonne]: req.sanitize(req.body.suivE_dateContact)},
         {where: {suivE_id: req.sanitize(req.body.suivE_id)}}
     ).then((response) => {
         //console.log(response)

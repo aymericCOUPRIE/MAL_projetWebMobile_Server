@@ -38,4 +38,22 @@ suiviExposants.put("/updateWorkflow", (req, res) => {
     })
 })
 
+suiviExposants.put("/updateBenevole", (req, res) => {
+    console.log("REQ BODY", req.body)
+    SuiviExposant.update(
+        {
+            suivE_benevole: req.sanitize(req.body.suivE_benevole)
+        },
+        {
+            where: {
+                suivE_id: req.sanitize(req.body.suivE_id)
+            }
+        }
+    ).then((response => {
+        res.send({message: "Update success"})
+    })).catch((err) => {
+        console.log(err)
+    })
+})
+
 module.exports = suiviExposants;
