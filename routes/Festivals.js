@@ -44,16 +44,18 @@ festivals.post('/add', (req, res) => {
 
 
 /**
- * Method which get all the festivals
+ * Method which get all the festivals order from the most recent to the older
  */
-festivals.get("/show",(req, res) => {
-    Festival.findAll()
+festivals.get("/allDetails",(req, res) => {
+    Festival.findAll({
+        order: [["fes_date", "DESC"]]
+    })
         .then((festivals) => {
             if (!festivals) {
                 res.json({error: "Il n'y a aucun festival"});
             } else {
-                //res.json({allFestivals: festivals});
-                res.send({res: festivals});
+                res.json({allFestivals: festivals});
+                //res.send({res: festivals});
             }
         })
         .catch((err) => {
