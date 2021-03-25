@@ -36,13 +36,17 @@ const Contact = db.sequelize.define(
     }
 )
 
+/*
 Contact.associate((models) => {
-    Contact.belongsTo(models.Societe, {
-        foreignKey: { name: "soc_id" },
-    });
-    models.Societe.hasMany(Contact, {
-        foreignKey: { name: "soc_id" },
-    });
+
 })
+*/
+
+Contact.belongsTo(Societe, {
+    foreignKey: { name: "soc_id" },
+});
+Societe.hasMany(Contact, {
+    foreignKey: { name: "soc_id" },
+});
 
 module.exports = Contact;

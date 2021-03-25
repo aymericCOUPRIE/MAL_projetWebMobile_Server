@@ -12,7 +12,8 @@ const RoleFestival = require("../models/Role_festival")
 const Reservation = require("../models/Reservation")
 const SuiviJeu = require("../models/Suivi_jeu")
 const Zone = require('../models/Zone')
-
+const SuiviExposant = require('../models/Suivi_exposant')
+const Contact = require('../models/Contact')
 const {Op} = require('sequelize')
 
 
@@ -167,6 +168,50 @@ festivals.get("/gameByEditor", ((req, res) => {
             res.send("error: " + err);
         });
 }))
+
+festivals.get("/affichageExposant/:fes_id", (req, res) => {
+
+    Festival.findAll({
+            attributes: ["fes_date"],
+            order: [["fes_date", "ASC"]],
+            where: {
+                fes_date: {
+                    [Op.gte]: Sequelize.literal('NOW()'),
+                }
+            },
+            limit: 1,
+            include: [
+                {
+                    model: Societe,
+                    through: {
+                        attributes: [],
+                        where: {
+                            rolF_estExposant: true,
+                        }
+                    },
+                    include: [
+                        {
+                            model: SuiviExposant
+                        },
+                        {
+                            model: Reservation
+                        },
+                        {
+                            model: Contact,
+                            limite: 3
+                        }
+                    ]
+                }
+            ]
+        }
+    ).then((result) => {
+        if (result) {
+            res.json(result)
+        } else {
+            res.send({message: "error"})
+        }
+    })
+})
 
 // to update the date of the festival
 festivals.put("/updateDate", (req, res) => {

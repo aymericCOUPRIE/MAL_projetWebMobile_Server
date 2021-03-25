@@ -4,7 +4,9 @@ const societes = express.Router();
 const db = require('../database/db')
 const sequelize = require("sequelize");
 
-//const Festival = require('../models/Festival')
+/*
+const Festival = require('../models/Festival')
+*/
 const Societe = require("../models/Societe")
 const RoleFestival = require("../models/Role_festival")
 const {QueryTypes} = require("sequelize");
@@ -24,6 +26,7 @@ societes.get('/affichage', (req, res) => {
         "   esp.esp_id, esp.esp_qte, esp.esp_enTables " +
         "FROM role_festival as rolF " +
         "INNER JOIN societe as soc ON rolF.soc_id = soc.soc_id " +
+        "LEFT JOIN contact ON contact.soc_id = soc.soc_id " +
         "INNER JOIN festival as fest ON fest.fes_id = rolF.fes_id " +
         "LEFT JOIN suivi_exposant as suivEx ON suivEx.soc_id = soc.soc_id " +
         "LEFT JOIN suivi_discussion as suivD ON suivEx.suivD_id = suivD.suivD_id " +
