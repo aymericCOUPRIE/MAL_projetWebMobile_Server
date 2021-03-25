@@ -90,7 +90,7 @@ festivals.get("/closest", (req, res) => {
 //liste jeux festival le plus proche par éditeur
 festivals.get("/gameByEditor", ((req, res) => {
 
-    
+
     Festival.findAll({
         attributes: ["fes_date"],
         order: [["fes_date", "ASC"]],
@@ -107,8 +107,7 @@ festivals.get("/gameByEditor", ((req, res) => {
                 through: {
                     attributes: [],
                     where: {
-                        rolF_estEditeur: true,
-                        rolF_estEditeur: 1
+                        rolF_estExposant: true,
                     }
                 },
                 include: [
@@ -126,6 +125,13 @@ festivals.get("/gameByEditor", ((req, res) => {
                                             {
                                                 model: TypeJeu,
                                                 attributes: ["typJ_libelle"],
+                                            },
+                                            {
+                                                model: Societe,
+                                                attributes: [
+                                                    //Renommer soc_nom en "nomEditeur"
+                                                    ["soc_nom", "nomEditeur"]
+                                                ]
                                             }
                                         ]
                                     },

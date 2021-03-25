@@ -11,6 +11,7 @@ suiviExposants.get("/getDiscussions", (req, res) => {
             attributes: ["suivD_id", "suivD_libelle"]
         }
     ).then((result) => {
+        console.log("UPDATE", result)
         res.json(result)
     })
 })
@@ -50,6 +51,7 @@ suiviExposants.put("/updateBenevole", (req, res) => {
             }
         }
     ).then((response => {
+        console.log("UPDATE", response)
         res.send({message: "Update success"})
     })).catch((err) => {
         console.log(err)

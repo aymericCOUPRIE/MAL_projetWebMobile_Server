@@ -54,7 +54,7 @@ societes.put("/updateStatusInactif", (req, res) => {
             }
         }
     ).then((response) => {
-        //console.log(response)
+        console.log(response)
         res.send({message: 'Update réussi'})
     }).catch((err) => {
         console.log(err)
@@ -63,25 +63,36 @@ societes.put("/updateStatusInactif", (req, res) => {
 
 
 societes.put("/updateStatusEditeur", (req, res) => {
-    console.log("UPDATE EDITEUR", req.body)
     RoleFestival.update(
-        {rolF_estEditeur: req.sanitize(req.body.rolF_estEditeur ? 1 : 0)},
-        {where: {soc_id: req.sanitize(req.body.soc_id), fes_id: req.sanitize(req.body.fes_id)}}
+        {
+            rolF_estEditeur: req.sanitize(req.body.rolF_estEditeur) ? 1 : 0
+        },
+        {
+            where: {
+                soc_id: req.sanitize(req.body.soc_id),
+                fes_id: req.sanitize(req.body.fes_id)
+            }
+        }
     ).then((response) => {
-        //console.log(response)
         res.send({message: 'Update réussi'})
     })
 })
 
 
 societes.put("/updateStatusExposant", (req, res) => {
-    console.log("UPDATE EXPOSANT", req.body)
 
     RoleFestival.update(
-        {rolF_estExposant: req.sanitize(req.body.rolF_estExposant ? 1 : 0)},
-        {where: {soc_id: req.sanitize(req.body.soc_id), fes_id: req.sanitize(req.body.fes_id)}}
+        {
+            rolF_estExposant: req.sanitize(req.body.rolF_estExposant) ? 1 : 0
+        },
+        {
+            where:
+                {
+                    soc_id: parseInt(req.sanitize(req.body.soc_id)),
+                    fes_id: parseInt(req.sanitize(req.body.fes_id))
+                }
+        }
     ).then((response) => {
-        //console.log(response)
         res.send({message: 'Update réussi'})
     })
 })
@@ -89,7 +100,6 @@ societes.put("/updateStatusExposant", (req, res) => {
 societes.put("/updateDateContact/:numeroRelance", (req, res) => {
     console.log("UPDATE DATE", req.body, req.params)
 
-    //console.log("REQ", req.body)
     let colonne = "";
 
     console.log("PARAMS", req.params.numeroRelance)
