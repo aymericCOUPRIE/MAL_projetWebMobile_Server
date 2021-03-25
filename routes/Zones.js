@@ -5,9 +5,13 @@ const sequelize = require("sequelize");
 const Zone = require('../models/Zone');
 
 //toutes les zones
-zones.get('/all',(req,res) =>{
+zones.get('/all/:fes_id',(req,res) =>{
+    console.log(req.params)
     Zone.findAll({
-        oder: [["zo_libelle","ASC"]],
+        order: [["zo_libelle","ASC"]],
+        where: {
+            fes_id: req.sanitize(req.params.fes_id)
+        }
     }).then((zones) => {
         if(zones){
             res.json(zones);
@@ -18,5 +22,7 @@ zones.get('/all',(req,res) =>{
         res.send("error: " + err);
     });
 })
+
+
 
 module.exports = zones
