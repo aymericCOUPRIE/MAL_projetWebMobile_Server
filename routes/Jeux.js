@@ -59,14 +59,6 @@ jeux.get('/allDetails', (req,res) => {
             attributes: ["soc_nom"]
         }]
     })
-    /*db.sequelize
-        .query(
-            "SELECT j.*,tj.typJ_libelle as typeJeu, soc.soc_nom as nom_editeur FROM jeu as j LEFT JOIN type_jeu as tj ON j.typJ_id = tj.typJ_id LEFT JOIN societe as soc ON j.soc_id = soc.soc_id",
-            {
-                type: QueryTypes.SELECT,
-                raw: false
-            }
-        )*/
         .then((jeux) => {
 
             if (jeux) {

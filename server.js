@@ -49,6 +49,9 @@ app.use('/server/suiviExposant', SuiviExposant)
 const JeuxFestival = require('./routes/JeuxFestival')
 app.use('/server/jeuxFestival',JeuxFestival)
 
+const Zones = require('./routes/Zones')
+app.use('/server/zones',Zones)
+
 //lancement serveur
 app.listen(port, function () {
     console.log("Server is running on port " + port);

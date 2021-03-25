@@ -2,7 +2,8 @@ const Sequelize = require('sequelize')
 const db = require("../database/db.js")
 const Suivi_jeu = require('./Suivi_jeu')
 const Role_festival = require('./Role_festival');
-const Suivi_exposant = require('./Suivi_exposant')
+const Suivi_exposant = require('./Suivi_exposant');
+const Zone = require('./Zone');
 
 const Festival = db.sequelize.define(
     'festival',
@@ -37,6 +38,13 @@ Suivi_exposant.belongsTo(Festival, {
     foreignKey: {name: "fes_id"},
 });
 Festival.hasMany(Suivi_exposant, {
+    foreignKey: {name: "fes_id"},
+});
+
+Zone.belongsTo(Festival, {
+    foreignKey: {name: "fes_id"},
+})
+Festival.hasMany(Zone, {
     foreignKey: {name: "fes_id"},
 });
 
