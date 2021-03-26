@@ -24,9 +24,6 @@ const Reservation = db.sequelize.define(
         res_envoiDebut: {
             type: Sequelize.BOOLEAN
         },
-        res_recu: {
-            type: Sequelize.BOOLEAN
-        },
         res_aRetourner: {
             type: Sequelize.BOOLEAN
         },
