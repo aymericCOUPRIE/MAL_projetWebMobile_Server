@@ -33,7 +33,7 @@ jeuxFestival.get('/:fes_id/allDetails', (req, res) => {
             },
             {
                 model: Reservation,
-                attributes: ["res_recu", "res_envoiDebut"],
+                attributes: ["res_envoiDebut"],
                 include: [
                     {
                         model: Societe, //exposant
@@ -291,6 +291,41 @@ jeuxFestival.post('/update-nbJeuxExposes/:suivJ_id', (req,res) => {
                     }
                 ).then(()=>{
                     res.json({success: "Nombre de jeux exposés changé!"})
+                })
+                    .catch((err) => {
+                        res.json({error: err});
+                    });
+            }
+        })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+})
+
+//changer recu
+jeuxFestival.post('/update-recu/:suivJ_id', (req,res) => {
+    SuiviJeu.findOne({
+        where: {
+            suivJ_id: req.sanitize(req.params.suivJ_id)
+        },
+    })
+        .then((suivi) => {
+            if (!suivi) {
+                res.json({error: "Ce suivi n'existe pas"})
+            } else {
+
+                SuiviJeu.update(
+                    {
+                        suivJ_recu: req.body.suivJ_recu, //j'utilize pas sanitize sinon il transforme mon booléen en undefine..
+                        suivJ_dateSaisie: Sequelize.literal('NOW()'),
+                    },
+                    {
+                        where: {
+                            suivJ_id: req.sanitize(req.params.suivJ_id)
+                        }
+                    }
+                ).then(() => {
+                    res.json({success: "Reçu changé!"})
                 })
                     .catch((err) => {
                         res.json({error: err});
