@@ -37,7 +37,7 @@ jeuxFestival.get('/:fes_id/allDetails', (req, res) => {
                 include: [
                     {
                         model: Societe, //exposant
-                        attributes: ["soc_nom"]
+                        attributes: ["soc_nom","soc_id"]
                     },
                     {
                         model: Festival,
