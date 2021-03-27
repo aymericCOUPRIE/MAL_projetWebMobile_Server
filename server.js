@@ -52,6 +52,9 @@ app.use('/server/jeuxFestival',JeuxFestival)
 const Zones = require('./routes/Zones')
 app.use('/server/zones',Zones)
 
+const Contacts = require('./routes/Contacts')
+app.use('/server/contacts', Contacts)
+
 //lancement serveur
 app.listen(port, function () {
     console.log("Server is running on port " + port);

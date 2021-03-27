@@ -11,14 +11,17 @@ const Espace = db.sequelize.define(
             primaryKey: true,
             autoIncrement: true
         },
-        esp_qte : {
+        esp_qte: {
             type: Sequelize.FLOAT
         },
-        loc_id : { // foreign key
+        loc_id: { // foreign key
             type: Sequelize.INTEGER
         },
-        res_id : { // foreign key
+        res_id: { // foreign key
             type: Sequelize.INTEGER
+        },
+        esp_enTables: {
+            type: Sequelize.BOOLEAN
         }
     },
     {
@@ -28,20 +31,22 @@ const Espace = db.sequelize.define(
     }
 )
 
-Espace.associate((models) => {
-    Espace.belongsTo(models.Localisation, {
-        foreignKey: { name: "loc_id" },
-    });
-    models.Localisation.hasMany(Espace, {
-        foreignKey: { name: "loc_id" },
-    });
+/*Espace.associate((models) => {
 
-    models.Reservation.belongsTo(Espace, {
-        foreignKey: { name: "res_id"},
-    });
-    Espace.hasOne(models.Reservation, {
-        foreignKey: { name: "res_id" },
-    });
-})
+})*/
 
-module.exports = espace;
+Espace.belongsTo(Localisation, {
+    foreignKey: {name: "loc_id"},
+});
+Localisation.hasMany(Espace, {
+    foreignKey: {name: "loc_id"},
+});
+
+Reservation.belongsTo(Espace, {
+    foreignKey: {name: "res_id"},
+});
+Espace.hasOne(Reservation, {
+    foreignKey: {name: "res_id"},
+});
+
+module.exports = Espace;

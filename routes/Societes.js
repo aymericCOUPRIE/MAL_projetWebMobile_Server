@@ -12,6 +12,7 @@ const SuiviExposant = require("../models/Suivi_exposant")
 const Contact = require('../models/Contact');
 
 
+/*
 societes.get('/affichage', (req, res) => {
 
     db.sequelize.query(
@@ -41,17 +42,18 @@ societes.get('/affichage', (req, res) => {
     })
 
 })
+*/
 
 
 societes.put("/updateStatusInactif", (req, res) => {
     console.log("UPDATE INACTIF", req.body)
     Societe.update(
         {
-            soc_estInactif: req.sanitize(req.body.soc_estInactif ? 1 : 0)
+            soc_estInactif: parseInt(req.sanitize(req.body.soc_estInactif))
         },
         {
             where: {
-                soc_id: req.sanitize(req.body.soc_id)
+                soc_id: parseInt(req.sanitize(req.body.soc_id))
             }
         }
     ).then((response) => {
@@ -98,37 +100,6 @@ societes.put("/updateStatusExposant", (req, res) => {
     })
 })
 
-societes.put("/updateDateContact/:numeroRelance", (req, res) => {
-    console.log("UPDATE DATE", req.body, req.params)
-
-    let colonne = "";
-
-    console.log("PARAMS", req.params.numeroRelance)
-    switch (req.params.numeroRelance) {
-        case "1":
-            colonne = "suivE_dateContact1";
-            break;
-        case "2":
-            colonne = "suivE_dateContact2";
-            break;
-        case "3":
-            colonne = "suivE_dateContact3";
-            break;
-        default:
-            res.send({message: "Requete impossible"})
-            return
-    }
-
-    console.log("COLONNE", colonne);
-
-    SuiviExposant.update(
-        {[colonne]: req.sanitize(req.body.suivE_dateContact)},
-        {where: {suivE_id: req.sanitize(req.body.suivE_id)}}
-    ).then((response) => {
-        //console.log(response)
-        res.send({message: 'Update réussi'})
-    })
-})
 
 //tous les éditeurs (id et nom)
 societes.get("/allEditeurs", (req, res) => {

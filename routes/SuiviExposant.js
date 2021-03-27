@@ -3,6 +3,7 @@ const suiviExposants = express.Router();
 
 const SuiviDiscussion = require('../models/Suivi_discussion')
 const SuiviExposant = require('../models/Suivi_exposant')
+const {Op} = require("sequelize");
 
 
 suiviExposants.get("/getDiscussions", (req, res) => {
@@ -39,15 +40,44 @@ suiviExposants.put("/updateWorkflow", (req, res) => {
     })
 })
 
+
+suiviExposants.put('/setAllAbsent', (req, res) => {
+
+    console.log("ABSEEEENT")
+    SuiviExposant.update(
+        {
+            suivD_id: 5
+        },
+        {
+            where: {
+                suivE_dateContact1: {
+                    [Op.ne]: null
+                },
+                suivE_dateContact2: {
+                    [Op.ne]: null
+                },
+                suivE_dateContact3: {
+                    [Op.ne]: null
+                },
+            }
+        }
+    ).then((result) => {
+        res.send({message: result})
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+
 suiviExposants.put("/updateBenevole", (req, res) => {
     console.log("REQ BODY", req.body)
     SuiviExposant.update(
         {
-            suivE_benevole: req.sanitize(req.body.suivE_benevole)
+            suivE_benevole: parseInt(req.sanitize(req.body.suivE_benevole))
         },
         {
             where: {
-                suivE_id: req.sanitize(req.body.suivE_id)
+                suivE_id: parseInt(req.sanitize(req.body.suivE_id))
             }
         }
     ).then((response => {
@@ -55,6 +85,40 @@ suiviExposants.put("/updateBenevole", (req, res) => {
         res.send({message: "Update success"})
     })).catch((err) => {
         console.log(err)
+    })
+})
+
+
+suiviExposants.put("/updateDateContact/:numeroRelance", (req, res) => {
+    let colonne = "";
+
+    switch (req.params.numeroRelance) {
+        case "1":
+            colonne = "suivE_dateContact1";
+            break;
+        case "2":
+            colonne = "suivE_dateContact2";
+            break;
+        case "3":
+            colonne = "suivE_dateContact3";
+            break;
+        default:
+            res.send({message: "Requete impossible"})
+            return
+    }
+
+    SuiviExposant.update(
+        {
+            [colonne]: req.sanitize(req.body.suivE_dateContact)
+        },
+        {
+            where: {
+                suivE_id: req.sanitize(req.body.suivE_id)
+            }
+        }
+    ).then((response) => {
+        //console.log(response)
+        res.send({message: 'Update réussi'})
     })
 })
 
