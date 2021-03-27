@@ -10,22 +10,31 @@ const Contact = db.sequelize.define(
             primaryKey: true,
             autoIncrement: true
         },
-        co_nom : {
+        co_nom: {
             type: Sequelize.STRING(100)
         },
-        co_prenom : {
+        co_prenom: {
             type: Sequelize.STRING(100)
         },
-        co_telFixe : {
+        co_telFixe: {
             type: Sequelize.STRING(20)
         },
-        co_telPortable : {
+        co_telPortable: {
             type: Sequelize.STRING(20)
         },
-        co_principal : {
+        co_principal: {
             type: Sequelize.BOOLEAN
         },
-        soc_id : { // foreign key
+        co_ville: {
+            type: Sequelize.STRING
+        },
+        co_rue: {
+            type: Sequelize.STRING
+        },
+        co_codePostal: {
+            type: Sequelize.STRING
+        },
+        soc_id: { // foreign key
             type: Sequelize.INTEGER
         }
     },
@@ -36,17 +45,11 @@ const Contact = db.sequelize.define(
     }
 )
 
-/*
-Contact.associate((models) => {
-
-})
-*/
-
 Contact.belongsTo(Societe, {
-    foreignKey: { name: "soc_id" },
+    foreignKey: {name: "soc_id"},
 });
 Societe.hasMany(Contact, {
-    foreignKey: { name: "soc_id" },
+    foreignKey: {name: "soc_id"},
 });
 
 module.exports = Contact;
