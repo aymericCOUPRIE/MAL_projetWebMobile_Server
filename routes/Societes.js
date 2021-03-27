@@ -4,13 +4,12 @@ const societes = express.Router();
 const db = require('../database/db')
 const sequelize = require("sequelize");
 
-/*
-const Festival = require('../models/Festival')
-*/
+
 const Societe = require("../models/Societe")
 const RoleFestival = require("../models/Role_festival")
 const {QueryTypes} = require("sequelize");
 const SuiviExposant = require("../models/Suivi_exposant")
+const Contact = require('../models/Contact');
 
 
 societes.get('/affichage', (req, res) => {
@@ -36,7 +35,6 @@ societes.get('/affichage', (req, res) => {
             type: sequelize.QueryTypes.SELECT
         }
     ).then((result) => {
-        //console.log(response)
         res.json(result)
     }).catch((err) => {
         console.log(err)
@@ -176,6 +174,45 @@ societes.post("/add", (req, res) => {
     })
 })
 
+// infos societe et ses contacts
+societes.get('/:soc_id/contacts', (req, res) => {
+    Societe.findOne({
+        where: {soc_id: req.sanitize(req.params.soc_id)},
+        attributes: {exclude: ["soc_estInactif"]},
+        include: [
+            {
+                model: Contact,
+            }
+        ]
+    })
+        .then((contacts) => {
+            if (contacts) {
+                res.json(contacts);
+            } else {
+                res.send("Cet exposant n'existe pas..");
+            }
+        })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+})
+
+//changer nom societe
+societes.post('/:soc_id/update-name', (req, res) => {
+    Societe.update({
+        soc_nom: req.sanitize(req.body.name)
+    }, {
+        where: {
+            soc_id: req.sanitize(req.params.soc_id)
+        }
+    }).then(() => {
+        res.json({success: "Nom changé!"})
+    })
+        .catch((err) => {
+            res.json({error: err});
+        });
+
+})
 
 module.exports = societes
 
