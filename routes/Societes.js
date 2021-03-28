@@ -185,6 +185,27 @@ societes.post('/:soc_id/update-name', (req, res) => {
 
 })
 
+
+//changer adresse societe
+societes.post('/:soc_id/update-adress', (req, res) => {
+    Societe.update({
+        soc_rue: req.sanitize(req.body.soc_rue),
+        soc_codePostal: req.sanitize(req.body.soc_codePostal),
+        soc_ville: req.sanitize(req.body.soc_ville),
+        soc_pays: req.sanitize(req.body.soc_pays)
+    }, {
+        where: {
+            soc_id: req.sanitize(req.params.soc_id)
+        }
+    }).then(() => {
+        res.json({success: "Adresse changé!"})
+    })
+        .catch((err) => {
+            res.json({error: err});
+        });
+
+})
+
 module.exports = societes
 
 

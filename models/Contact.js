@@ -22,6 +22,9 @@ const Contact = db.sequelize.define(
         co_telPortable: {
             type: Sequelize.STRING(20)
         },
+        co_mail:{
+            type: Sequelize.STRING(100)
+        },
         co_principal: {
             type: Sequelize.BOOLEAN
         },
