@@ -26,17 +26,24 @@ const Contact = db.sequelize.define(
             type: Sequelize.BOOLEAN
         },
         co_ville: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(100)
         },
         co_rue: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(100)
         },
         co_codePostal: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(5)
+        },
+        co_pays: {
+            type: Sequelize.STRING(100)
         },
         soc_id: { // foreign key
             type: Sequelize.INTEGER
+        },
+        co_mail: {
+            type: Sequelize.STRING(100)
         }
+
     },
     {
         timestamps: false,
