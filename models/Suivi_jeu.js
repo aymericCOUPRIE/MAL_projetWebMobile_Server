@@ -35,6 +35,12 @@ const Suivi_jeu = db.sequelize.define(
         suivJ_prototype:{
             type: Sequelize.BOOLEAN
         },
+        suivJ_aRenvoyer:{
+            type: Sequelize.BOOLEAN
+        },
+        suivJ_renvoye:{
+            type: Sequelize.BOOLEAN
+        },
         zo_id: { // foreign key
             type: Sequelize.INTEGER
         },

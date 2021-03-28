@@ -24,12 +24,6 @@ const Reservation = db.sequelize.define(
         res_envoiDebut: {
             type: Sequelize.BOOLEAN
         },
-        res_aRetourner: {
-            type: Sequelize.BOOLEAN
-        },
-        res_renvoiFin: {
-            type: Sequelize.BOOLEAN
-        },
         res_prixRetour: {
             type: Sequelize.FLOAT
         },
