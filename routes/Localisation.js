@@ -36,4 +36,58 @@ localisations.post('/add/:fes_id', (req, res) => {
     })
 });
 
+/**
+ * Method which get all the localisations for a festival
+ */
+localisations.get("/allDetails/:fes_id", (req, res) => {
+    Localisation.findAll({
+        where: {
+            fes_id: req.sanitize(req.params.fes_id)
+        }
+    })
+        .then((localisations) => {
+            if (!localisations) {
+                res.json({error: "There is no localisation for this festival"});
+            } else {
+                res.json(localisations);
+            }
+        })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+});
+
+// to update the unit price of the table
+localisations.put("/updatePriceTable", (req, res) => {
+    Localisation.update(
+        {
+            loc_prixTable: req.sanitize(req.body.new_priceTable)
+        },
+        {
+            where: {
+                loc_id: req.sanitize(req.body.loc_id)
+            }
+        }
+    ).then((response) => {
+        res.send({message: 'The price for a table was modified.'})
+    })
+})
+
+// to update the unit price of the table
+localisations.put("/updatePriceM2", (req, res) => {
+    Localisation.update(
+        {
+            loc_prixM2: req.sanitize(req.body.new_priceM2)
+        },
+        {
+            where: {
+                loc_id: req.sanitize(req.body.loc_id)
+            }
+        }
+    ).then((response) => {
+        res.send({message: 'The price for a m² was modified.'})
+    })
+})
+
+
 module.exports = localisations;
