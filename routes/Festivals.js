@@ -295,6 +295,22 @@ festivals.get("/:fes_id", (req, res) => {
     });
 })
 
+festivals.get("/:fes_date", (req, res) => {
+    Festival.findOne(
+        {
+            where: {fes_date: req.sanitize(req.params.fes_date)}
+        }
+    ).then((festival) => {
+        if (!festival) {
+            res.json({error: "Aucun festival ne correspond à cette date"});
+        } else {
+            res.json({festivalFromDate: festival});
+        }
+    }).catch((err) => {
+        res.send("error: " + err);
+    });
+});
+
 
 module.exports = festivals;
 

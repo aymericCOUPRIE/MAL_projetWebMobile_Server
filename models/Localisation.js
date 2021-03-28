@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require("../database/db.js")
-const espace = require('./Espace')
+const Festival = require('./Festival')
 
 const localisation = db.sequelize.define(
     'localisation',
@@ -18,7 +18,10 @@ const localisation = db.sequelize.define(
         },
         loc_libelle : {
             type: Sequelize.STRING(50)
-        }
+        },
+        fes_id: { // foreign key
+            type: Sequelize.INTEGER
+        },
     },
     {
         timestamps: false,
@@ -27,5 +30,11 @@ const localisation = db.sequelize.define(
     }
 )
 
+localisation.belongsTo(Festival, {
+    foreignKey: {name: "fes_id"},
+});
+Festival.hasMany(localisation, {
+    foreignKey: {name: "fes_id"},
+});
 
 module.exports = localisation

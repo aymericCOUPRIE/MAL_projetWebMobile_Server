@@ -55,6 +55,9 @@ app.use('/server/zones',Zones)
 const Contacts = require('./routes/Contacts')
 app.use('/server/contacts', Contacts)
 
+const Localisation = require('./routes/Localisation')
+app.use('/server/localisation', Localisation)
+
 //lancement serveur
 app.listen(port, function () {
     console.log("Server is running on port " + port);
