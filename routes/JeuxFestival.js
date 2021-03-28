@@ -337,4 +337,74 @@ jeuxFestival.post('/update-recu/:suivJ_id', (req,res) => {
         });
 })
 
+//changer a renvoyer
+jeuxFestival.post('/update-aRenvoyer/:suivJ_id', (req,res) => {
+    SuiviJeu.findOne({
+        where: {
+            suivJ_id: req.sanitize(req.params.suivJ_id)
+        },
+    })
+        .then((suivi) => {
+            if (!suivi) {
+                res.json({error: "Ce suivi n'existe pas"})
+            } else {
+
+                SuiviJeu.update(
+                    {
+                        suivJ_aRenvoyer: req.body.suivJ_aRenvoyer, //j'utilize pas sanitize sinon il transforme mon booléen en undefine..
+                        suivJ_dateSaisie: Sequelize.literal('NOW()'),
+                    },
+                    {
+                        where: {
+                            suivJ_id: req.sanitize(req.params.suivJ_id)
+                        }
+                    }
+                ).then(() => {
+                    res.json({success: "A renvoyer changé!"})
+                })
+                    .catch((err) => {
+                        res.json({error: err});
+                    });
+            }
+        })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+})
+
+//changer renvoyé
+jeuxFestival.post('/update-renvoye/:suivJ_id', (req,res) => {
+    SuiviJeu.findOne({
+        where: {
+            suivJ_id: req.sanitize(req.params.suivJ_id)
+        },
+    })
+        .then((suivi) => {
+            if (!suivi) {
+                res.json({error: "Ce suivi n'existe pas"})
+            } else {
+
+                SuiviJeu.update(
+                    {
+                        suivJ_renvoye: req.body.suivJ_renvoye, //j'utilize pas sanitize sinon il transforme mon booléen en undefine..
+                        suivJ_dateSaisie: Sequelize.literal('NOW()'),
+                    },
+                    {
+                        where: {
+                            suivJ_id: req.sanitize(req.params.suivJ_id)
+                        }
+                    }
+                ).then(() => {
+                    res.json({success: "Renvoyé changé!"})
+                })
+                    .catch((err) => {
+                        res.json({error: err});
+                    });
+            }
+        })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+})
+
 module.exports = jeuxFestival
