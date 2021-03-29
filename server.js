@@ -59,6 +59,12 @@ app.use('/server/contacts', Contacts)
 const Localisation = require('./routes/Localisation')
 app.use('/server/localisation', Localisation)
 
+//deploiement
+app.use(express.static(path.join(__dirname, 'build')));
+app.get("/*", function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+})
+
 //lancement serveur
 app.listen(port, function () {
     console.log("Server is running on port " + port);
