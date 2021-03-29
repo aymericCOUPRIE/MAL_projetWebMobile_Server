@@ -33,13 +33,13 @@ const Societes = require('./routes/Societes');
 app.use('/server/societe', Societes);
 
 const Festivals = require('./routes/Festivals');
-app.use("/server/festivals",Festivals);
+app.use("/serverfestivals",Festivals);
 
 const Jeux = require('./routes/Jeux');
-app.use("/server/jeux",Jeux);
+app.use("/serverjeux",Jeux);
 
 const Reservations = require('./routes/Reservations')
-app.use("/server/reservations", Reservations)
+app.use("/serverreservations", Reservations)
 
 const TypeJeu = require('./routes/TypeJeu')
 app.use('/server/typeJeu',TypeJeu)
