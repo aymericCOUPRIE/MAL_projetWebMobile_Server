@@ -117,7 +117,7 @@ festivals.get("/closest", (req, res) => {
 
 
 //liste jeux festival le plus proche par éditeur
-festivals.get("/gameByEditor", ((req, res) => {
+festivals.get("/allInfosNextFestival", ((req, res) => {
 
 
     Festival.findAll({
