@@ -27,19 +27,19 @@ dotenv.config();
 
 //déclaration des routes
 const Users = require("./routes/Users");
-app.use("/server", Users);
+app.use("/server/", Users);
 
 const Societes = require('./routes/Societes');
 app.use('/server/societe', Societes);
 
 const Festivals = require('./routes/Festivals');
-app.use("/serverfestivals",Festivals);
+app.use("/server/festivals",Festivals);
 
 const Jeux = require('./routes/Jeux');
-app.use("/serverjeux",Jeux);
+app.use("/server/jeux",Jeux);
 
 const Reservations = require('./routes/Reservations')
-app.use("/serverreservations", Reservations)
+app.use("/server/reservations", Reservations)
 
 const TypeJeu = require('./routes/TypeJeu')
 app.use('/server/typeJeu',TypeJeu)
