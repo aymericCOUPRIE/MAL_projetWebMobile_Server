@@ -15,8 +15,14 @@ const Reservation = db.sequelize.define(
         res_facture: {
             type: Sequelize.BOOLEAN
         },
+        res_dateFacturation: {
+            type: Sequelize.DATEONLY
+        },
         res_paiement: {
             type: Sequelize.BOOLEAN
+        },
+        res_datePaiement: {
+            type: Sequelize.DATEONLY
         },
         res_prixNegocie: {
             type: Sequelize.FLOAT
