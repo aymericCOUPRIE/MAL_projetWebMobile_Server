@@ -203,27 +203,27 @@ suiviExposants.put("/updateDateContact/:numeroRelance", (req, res) => {
 })
 
 //changer le commentaire
-suiviExposants.post('/:soc_id/update-commentaire', (req,res) => {
+suiviExposants.post('/:soc_id/update-commentaire', (req, res) => {
 
     SuiviExposant.update(
-                    {
-                        suivE_commentaire: req.body.suivE_commentaire, //j'utilize pas sanitize sinon il transforme mon booléen en undefine..
-                    },
-                    {
-                        where: {
-                            soc_id: req.sanitize(req.params.soc_id),
-                            fes_id: req.sanitize(req.body.fes_id)
-                        }
-                    }
-                ).then(() => {
-                    res.json({success: "Commentaire changé!"})
-                })
-                    .catch((err) => {
-                        res.json({error: err});
-                    });
+        {
+            suivE_commentaire: req.body.suivE_commentaire, //j'utilize pas sanitize sinon il transforme mon booléen en undefine..
+        },
+        {
+            where: {
+                soc_id: req.sanitize(req.params.soc_id),
+                fes_id: req.sanitize(req.body.fes_id)
+            }
+        }
+    ).then(() => {
+            res.json({success: "Commentaire changé!"})
+        }
+    ).catch((err) => {
+            res.json({error: err});
+        }
+    );
 
 })
-
 
 
 module.exports = suiviExposants;

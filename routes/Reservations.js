@@ -47,6 +47,7 @@ reservations.get("/afficherAllReservation/:fes_id", (req, res) => {
 
 
 reservations.put('/updateReservationFacture', (req, res) => {
+
     Reservation.update(
         {
             res_facture: parseInt(req.sanitize(req.body.res_facture))
@@ -62,6 +63,85 @@ reservations.put('/updateReservationFacture', (req, res) => {
         console.log(err)
     })
 })
+
+
+reservations.put('/updateReservationLocalisation', (req, res) => {
+
+    Espace.update(
+        {
+            loc_id: parseInt(req.sanitize(req.body.loc_id))
+        },
+        {
+            where: {
+                res_id: parseInt(req.sanitize(req.body.res_id))
+            }
+        }
+    ).then((response) => {
+        console.log("REPSONSE", response)
+        res.send({message: "Update réussi avec succès"})
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+reservations.put('/updateReservationPaiement', (req, res) => {
+
+    Reservation.update(
+        {
+            res_paiement: parseInt(req.sanitize(req.body.res_paiement))
+        },
+        {
+            where: {
+                res_id: parseInt(req.sanitize(req.body.res_id))
+            }
+        }
+    ).then((response) => {
+        res.send({message: "Update réussi avec succès"})
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+
+reservations.put('/updateReservationPrixRetour', (req, res) => {
+
+    Reservation.update(
+        {
+            res_prixRetour: parseFloat(req.sanitize(req.body.res_prixRetour))
+        },
+        {
+            where: {
+                res_id: parseInt(req.sanitize(req.body.res_id))
+            }
+        }
+    ).then((response) => {
+        res.send({message: "Update réussi avec succès"})
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+
+reservations.put('/updateReservationPrixNegocie', (req, res) => {
+
+    console.log("REQ BODY", req.body)
+
+    Reservation.update(
+        {
+            res_prixNegocie: parseFloat(req.sanitize(req.body.res_prixNegocie))
+        },
+        {
+            where: {
+                res_id: parseInt(req.sanitize(req.body.res_id))
+            }
+        }
+    ).then((response) => {
+        res.send({message: "Update réussi avec succès"})
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
 
 //récupérer toutes les données d'une réservation (même le suivi)
 reservations.get('/:soc_id/:fes_id/allInformations', (req, res) => {

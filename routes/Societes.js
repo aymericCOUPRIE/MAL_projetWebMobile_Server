@@ -161,6 +161,13 @@ societes.post("/add/:fes_id", (req, res) => {
                                 res.send(result)
                             }
                         )
+
+                        SuiviExposant.create(
+                            {
+
+                            }
+                        )
+
                         res.send({message: result})
                     }
                 ).catch((err) => {
