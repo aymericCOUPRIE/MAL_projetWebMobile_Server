@@ -65,9 +65,7 @@ reservations.put('/updateReservationFacture', (req, res) => {
 
 //récupérer toutes les données d'une réservation (même le suivi)
 reservations.get('/:soc_id/:fes_id/allInformations', (req, res) => {
-    console.log("ID FES RECUP", req.body.fes_id),
-        console.log("societe", req.params.soc_id),
-        console.log("BODY", req.body)
+
     db.sequelize.query("SELECT * FROM suivi_exposant INNER JOIN reservation ON suivi_exposant.soc_id = reservation.soc_id AND suivi_exposant.fes_id = reservation.fes_id WHERE suivi_exposant.soc_id = ? AND suivi_exposant.fes_id = ?",
         {
             replacements: [req.sanitize(req.params.soc_id), req.sanitize(req.params.fes_id)],

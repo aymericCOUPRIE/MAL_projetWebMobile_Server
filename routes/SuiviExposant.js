@@ -43,7 +43,6 @@ suiviExposants.put("/updateWorkflow", (req, res) => {
 
 suiviExposants.put('/setAllAbsent', (req, res) => {
 
-    console.log("ABSEEEENT")
     SuiviExposant.update(
         {
             suivD_id: 5
@@ -70,7 +69,6 @@ suiviExposants.put('/setAllAbsent', (req, res) => {
 
 
 suiviExposants.put("/updateBenevole", (req, res) => {
-    console.log("REQ BODY", req.body)
     SuiviExposant.update(
         {
             suivE_benevole: parseInt(req.sanitize(req.body.suivE_benevole))
@@ -88,9 +86,52 @@ suiviExposants.put("/updateBenevole", (req, res) => {
     })
 })
 
-
+//changer la valeur du déplacement
+/*
 suiviExposants.put("/updateSeDeplace", (req, res) => {
-    console.log("REQ BODY", req.body)
+    console.log("JE SUIS LAAAAAAA")
+    console.log("DEPLACEMENT",req.body.suivE_deplacement)
+    console.log("PARSE INT DEPLACEMENT",parseInt(req.sanitize(req.body.suivE_deplacement)))
+    if(!req.body.suivE_deplacement){ //-> si il ne vient pas il a besoin de bénévols
+        SuiviExposant.update(
+            {
+                suivE_deplacement: parseInt(req.sanitize(req.body.suivE_deplacement)),
+                suivE_benevole : 1
+            },
+            {
+                where: {
+                    suivE_id: parseInt(req.sanitize(req.body.suivE_id))
+                }
+            }
+        ).then((response => {
+            console.log("UPDATE", response)
+            res.send({message: "Update success"})
+        })).catch((err) => {
+            console.log(err)
+        })
+    }else{
+        SuiviExposant.update(
+            {
+                suivE_deplacement: parseInt(req.sanitize(req.body.suivE_deplacement))
+            },
+            {
+                where: {
+                    suivE_id: parseInt(req.sanitize(req.body.suivE_id))
+                }
+            }
+        ).then((response => {
+            console.log("UPDATE", response)
+            res.send({message: "Update success"})
+        })).catch((err) => {
+            console.log(err)
+        })
+    }
+
+})
+*/
+suiviExposants.put("/updateSeDeplace", (req, res) => {
+    console.log("DEPLACE", req.body.suivE_deplacement)
+    console.log("WHOOOOOO", req.body.suivE_id)
     SuiviExposant.update(
         {
             suivE_deplacement: parseInt(req.sanitize(req.body.suivE_deplacement))
@@ -110,7 +151,6 @@ suiviExposants.put("/updateSeDeplace", (req, res) => {
 
 
 suiviExposants.put("/updateNbBenevole", (req, res) => {
-    console.log("REQ BODY", req.body)
     SuiviExposant.update(
         {
             suivE_nbBenevoles: parseInt(req.sanitize(req.body.suivE_nbBenevoles))
