@@ -130,20 +130,52 @@ societes.get("/allEditeurs", (req, res) => {
         });
 })
 
-societes.post("/add", (req, res) => {
+societes.post("/add/:fes_id", (req, res) => {
 
-    Societe.create({
-        soc_nom: req.sanitize(req.body.soc_nom),
-        soc_ville: req.sanitize(req.body.soc_ville),
-        soc_rue: req.sanitize(req.body.soc_rue),
-        soc_codePostal: req.sanitize(req.body.soc_codePostal),
-        soc_pays: req.sanitize(req.body.soc_pays)
-    }).then((response) => {
-        res.send({message: "CREATE success"})
-    }).catch((err) => {
-        res.send({message: "CREATE fail"})
-    })
+    Societe.findOne(
+        {
+            where: {
+                soc_nom: req.sanitize(req.body.soc_nom)
+            }
+        }
+    ).then((result) => {
+            if (!result) {
+                Societe.create(
+                    {
+                        soc_nom: req.sanitize(req.body.soc_nom),
+                        soc_ville: req.sanitize(req.body.soc_ville),
+                        soc_rue: req.sanitize(req.body.soc_rue),
+                        soc_codePostal: req.sanitize(req.body.soc_codePostal),
+                        soc_pays: req.sanitize(req.body.soc_pays)
+                    }
+                ).then((result) => {
+
+                        RoleFestival.create(
+                            {
+                                rolF_estExposant: 0,
+                                rolF_estEditeur: 0,
+                                soc_id: result.dataValues.soc_id,
+                                fes_id: req.params.fes_id
+                            }
+                        ).then((result) => {
+                                res.send(result)
+                            }
+                        )
+                        res.send({message: result})
+                    }
+                ).catch((err) => {
+                        res.send({message: "CREATE fail"})
+                    }
+                )
+
+            } else {
+                res.send({message: "Socete déjà existante"})
+            }
+
+        }
+    )
 })
+
 
 // infos societe et ses contacts
 societes.get('/:soc_id/contacts', (req, res) => {
