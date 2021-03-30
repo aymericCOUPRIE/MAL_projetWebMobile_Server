@@ -89,6 +89,46 @@ suiviExposants.put("/updateBenevole", (req, res) => {
 })
 
 
+suiviExposants.put("/updateSeDeplace", (req, res) => {
+    console.log("REQ BODY", req.body)
+    SuiviExposant.update(
+        {
+            suivE_deplacement: parseInt(req.sanitize(req.body.suivE_deplacement))
+        },
+        {
+            where: {
+                suivE_id: parseInt(req.sanitize(req.body.suivE_id))
+            }
+        }
+    ).then((response => {
+        console.log("UPDATE", response)
+        res.send({message: "Update success"})
+    })).catch((err) => {
+        console.log(err)
+    })
+})
+
+
+suiviExposants.put("/updateNbBenevole", (req, res) => {
+    console.log("REQ BODY", req.body)
+    SuiviExposant.update(
+        {
+            suivE_nbBenevoles: parseInt(req.sanitize(req.body.suivE_nbBenevoles))
+        },
+        {
+            where: {
+                suivE_id: parseInt(req.sanitize(req.body.suivE_id))
+            }
+        }
+    ).then((response => {
+        console.log("UPDATE", response)
+        res.send({message: "Update success"})
+    })).catch((err) => {
+        console.log(err)
+    })
+})
+
+
 suiviExposants.put("/updateDateContact/:numeroRelance", (req, res) => {
     let colonne = "";
 
@@ -143,5 +183,7 @@ suiviExposants.post('/:soc_id/update-commentaire', (req,res) => {
                     });
 
 })
+
+
 
 module.exports = suiviExposants;
