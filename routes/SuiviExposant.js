@@ -6,6 +6,24 @@ const SuiviExposant = require('../models/Suivi_exposant')
 const {Op} = require("sequelize");
 
 
+suiviExposants.get("/festival/:fes_id/societe/:soc_id", (req, res) => {
+    SuiviExposant.findOne(
+        {
+            where: {
+                fes_id: req.sanitize(req.params.fes_id),
+                soc_id: req.sanitize(req.params.soc_id)
+            }
+        }
+    )
+        .then((result) => {
+            res.json(result)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+})
+
+
 suiviExposants.get("/getDiscussions", (req, res) => {
 
     SuiviDiscussion.findAll({

@@ -13,6 +13,23 @@ const Localisation = require("../models/Localisation")
 
 const {QueryTypes} = require("sequelize");
 
+reservations.get("/festival/:fes_id/societe/:soc_id", (req, res) => {
+    Reservation.findOne(
+        {
+            where: {
+                fes_id: req.sanitize(req.params.fes_id),
+                soc_id: req.sanitize(req.params.soc_id)
+            }
+        }
+    )
+        .then((result) => {
+            res.json(result)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+})
+
 
 reservations.get("/afficherAllReservation/:fes_id", (req, res) => {
 
@@ -143,25 +160,5 @@ reservations.put('/updateReservationPrixNegocie', (req, res) => {
 })
 
 
-//récupérer toutes les données d'une réservation (même le suivi)
-reservations.get('/:soc_id/:fes_id/allInformations', (req, res) => {
-
-    db.sequelize.query("SELECT * FROM suivi_exposant INNER JOIN reservation ON suivi_exposant.soc_id = reservation.soc_id AND suivi_exposant.fes_id = reservation.fes_id WHERE suivi_exposant.soc_id = ? AND suivi_exposant.fes_id = ?",
-        {
-            replacements: [req.sanitize(req.params.soc_id), req.sanitize(req.params.fes_id)],
-            type: sequelize.QueryTypes.SELECT
-        })
-        .then((resa) => {
-
-            if (resa) {
-                res.json(resa);
-            } else {
-                res.send("Il n'y a pas de réservation, ni de suivi pour cet exposant et ce festival..");
-            }
-        })
-        .catch((err) => {
-            res.send("error: " + err);
-        });
-})
 
 module.exports = reservations;
