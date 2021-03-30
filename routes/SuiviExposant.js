@@ -87,12 +87,11 @@ suiviExposants.put("/updateBenevole", (req, res) => {
 })
 
 //changer la valeur du déplacement
-/*
+
 suiviExposants.put("/updateSeDeplace", (req, res) => {
-    console.log("JE SUIS LAAAAAAA")
-    console.log("DEPLACEMENT",req.body.suivE_deplacement)
-    console.log("PARSE INT DEPLACEMENT",parseInt(req.sanitize(req.body.suivE_deplacement)))
-    if(!req.body.suivE_deplacement){ //-> si il ne vient pas il a besoin de bénévols
+
+    if(parseInt((req.body.suivE_deplacement)) === 0){ //-> si il ne vient pas il a besoin de bénévols
+
         SuiviExposant.update(
             {
                 suivE_deplacement: parseInt(req.sanitize(req.body.suivE_deplacement)),
@@ -127,26 +126,6 @@ suiviExposants.put("/updateSeDeplace", (req, res) => {
         })
     }
 
-})
-*/
-suiviExposants.put("/updateSeDeplace", (req, res) => {
-    console.log("DEPLACE", req.body.suivE_deplacement)
-    console.log("WHOOOOOO", req.body.suivE_id)
-    SuiviExposant.update(
-        {
-            suivE_deplacement: parseInt(req.sanitize(req.body.suivE_deplacement))
-        },
-        {
-            where: {
-                suivE_id: parseInt(req.sanitize(req.body.suivE_id))
-            }
-        }
-    ).then((response => {
-        console.log("UPDATE", response)
-        res.send({message: "Update success"})
-    })).catch((err) => {
-        console.log(err)
-    })
 })
 
 
