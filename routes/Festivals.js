@@ -116,6 +116,43 @@ festivals.get("/closest", (req, res) => {
 });
 
 
+//toutes les zones d'un festival avec les jeux qu'il y a dedans
+festivals.get("/closest/gamesByZone", (req,res) => {
+    Festival.findOne({
+        attributes: ["fes_date","fes_id"],
+        order: [["fes_date", "ASC"]],
+        where: {
+            fes_date: {
+                [Op.gte]: Sequelize.literal('NOW()'),
+            }
+        },
+        limit: 1,
+        include: [{
+            model: Zone,
+            include: [{
+                model: SuiviJeu,
+                attributes: ["j_id","zo_id"],
+               include: [{
+                    model: Jeu,
+                   include: [{
+                        model: TypeJeu,
+                   }]
+               }]
+            }]
+        }]
+    }) .then((result) => {
+
+        if (result) {
+            res.json(result);
+        } else {
+            res.send("C'est le néaaaaan");
+        }
+    })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+})
+
 //liste jeux festival le plus proche par éditeur
 festivals.get("/allInfosNextFestival", ((req, res) => {
 
@@ -310,6 +347,8 @@ festivals.get("/:fes_date", (req, res) => {
         res.send("error: " + err);
     });
 });
+
+
 
 
 module.exports = festivals;
