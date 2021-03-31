@@ -73,7 +73,7 @@ Societe.hasMany(Jeu, {
 });
 
 Societe.belongsToMany(Festival,
-    { through: Role_festival, foreignKey: "soc_id" }
+    {through: Role_festival, foreignKey: "soc_id" }
 )
 Festival.belongsToMany(Societe,
     {

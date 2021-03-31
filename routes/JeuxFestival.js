@@ -9,6 +9,7 @@ const Zone = require("../models/Zone")
 const Reservation = require("../models/Reservation")
 const SuiviJeu = require("../models/Suivi_jeu")
 const Festival = require("../models/Festival")
+const {Op} = require("sequelize");
 
 //récupérer les infos des jeux d'un festival
 jeuxFestival.get('/:fes_id/allDetails', (req, res) => {
@@ -51,12 +52,12 @@ jeuxFestival.get('/:fes_id/allDetails', (req, res) => {
 
         ]
     }).then((jeux) => {
-            if (jeux) {
-                res.json(jeux);
-            } else {
-                res.send("Il n'y a pas de jeux pour ce festival");
-            }
-        })
+        if (jeux) {
+            res.json(jeux);
+        } else {
+            res.send("Il n'y a pas de jeux pour ce festival");
+        }
+    })
         .catch((err) => {
             res.send("error: " + err);
         });
@@ -64,38 +65,62 @@ jeuxFestival.get('/:fes_id/allDetails', (req, res) => {
 
 
 //récupérer les infos des jeux d'un festival
-jeuxFestival.get('/allGames/:fes_id', (req, res) => {
-    SuiviJeu.findAll({
-        attributes: ["suivJ_id"],
-        include: [
+jeuxFestival.get('/allGames', (req, res) => {
+    Festival.findAll({
+        attributes: ["fes_id"],
+        order: [["fes_date", "ASC"]],
+        where: {
+            fes_date: {
+                [Op.gte]: Sequelize.literal('NOW()'),
+            }
+        },
+        limit: 1,
+    }).then((result) => {
+        Reservation.findAll(
             {
-                model: Zone,
-                attributes: ["zo_libelle"]
-            },
-            {
-                model: Jeu,
+                attributes: ["fes_id", "res_id"],
+                where: {fes_id: result[0].dataValues.fes_id},
                 include: [
                     {
-                        model: TypeJeu,
-                        attributes: ["typJ_libelle"]
-                    },
-                    {
-                        model: Societe, //editeur
-                        attributes: ["soc_nom"]
+                        model: SuiviJeu,
+                        attributes: ["suivJ_id"],
+                        include: [
+                            {
+                                model: Zone,
+                                attributes: ["zo_libelle"]
+                            },
+                            {
+                                model: Jeu,
+                                include: [
+                                    {
+                                        model: TypeJeu,
+                                        attributes: ["typJ_libelle"]
+                                    },
+                                    {
+                                        model: Societe, //editeur
+                                        attributes: ["soc_nom"]
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
-            },
-        ]
-    }).then((jeux) => {
-        console.log("JEUX", jeux)
-        if (jeux) {
-            res.json(jeux);
-        } else {
-            res.send("Il n'y a pas de jeux pour ce festival");
-        }
+            }
+        ).then((jeux) => {
+            if (jeux) {
+                res.json(jeux);
+            } else {
+                res.send("Il n'y a pas de jeux pour ce festival");
+            }
+        }).catch((err) => {
+            res.send("error: " + err);
+        });
+
     }).catch((err) => {
-        res.send("error: " + err);
-    });
+        console.log(err)
+    })
+
+
 })
 
 
