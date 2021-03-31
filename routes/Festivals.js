@@ -332,7 +332,7 @@ festivals.get("/:fes_id", (req, res) => {
     });
 })
 
-festivals.get("/:fes_date", (req, res) => {
+/*festivals.get("/:fes_date", (req, res) => {
     Festival.findOne(
         {
             where: {fes_date: req.sanitize(req.params.fes_date)}
@@ -346,7 +346,7 @@ festivals.get("/:fes_date", (req, res) => {
     }).catch((err) => {
         res.send("error: " + err);
     });
-});
+});*/
 
 
 
