@@ -135,7 +135,9 @@ festivals.get("/closest/gamesByZone", (req,res) => {
                include: [{
                     model: Jeu,
                    include: [{
-                        model: TypeJeu,
+                       model: TypeJeu},
+                       {model: Societe,
+                           attributes: ["soc_nom"],
                    }]
                }]
             }]
