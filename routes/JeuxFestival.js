@@ -37,7 +37,7 @@ jeuxFestival.get('/:fes_id/allDetails', (req, res) => {
                 include: [
                     {
                         model: Societe, //exposant
-                        attributes: ["soc_nom","soc_id"]
+                        attributes: ["soc_nom", "soc_id"]
                     },
                     {
                         model: Festival,
@@ -50,8 +50,7 @@ jeuxFestival.get('/:fes_id/allDetails', (req, res) => {
             }
 
         ]
-    })
-        .then((jeux) => {
+    }).then((jeux) => {
             if (jeux) {
                 res.json(jeux);
             } else {
@@ -62,6 +61,43 @@ jeuxFestival.get('/:fes_id/allDetails', (req, res) => {
             res.send("error: " + err);
         });
 })
+
+
+//récupérer les infos des jeux d'un festival
+jeuxFestival.get('/allGames/:fes_id', (req, res) => {
+    SuiviJeu.findAll({
+        attributes: ["suivJ_id"],
+        include: [
+            {
+                model: Zone,
+                attributes: ["zo_libelle"]
+            },
+            {
+                model: Jeu,
+                include: [
+                    {
+                        model: TypeJeu,
+                        attributes: ["typJ_libelle"]
+                    },
+                    {
+                        model: Societe, //editeur
+                        attributes: ["soc_nom"]
+                    }
+                ]
+            },
+        ]
+    }).then((jeux) => {
+        console.log("JEUX", jeux)
+        if (jeux) {
+            res.json(jeux);
+        } else {
+            res.send("Il n'y a pas de jeux pour ce festival");
+        }
+    }).catch((err) => {
+        res.send("error: " + err);
+    });
+})
+
 
 //changer prototype d'un suivi jeu
 jeuxFestival.post('/update-prototype/:suivJ_id', (req, res) => {
@@ -77,11 +113,11 @@ jeuxFestival.post('/update-prototype/:suivJ_id', (req, res) => {
                 SuiviJeu.update({
                     suivJ_prototype: req.body.suivJ_prototype, //j'utilize pas sanitize sinon il transforme mon booléen en undefine..
                     suivJ_dateSaisie: Sequelize.literal('NOW()'),
-                },{
+                }, {
                     where: {
                         suivJ_id: req.sanitize(req.params.suivJ_id)
                     }
-                } ).then(()=>{
+                }).then(() => {
                     res.json({success: "Prototype changée!"})
                 })
                     .catch((err) => {
@@ -115,7 +151,7 @@ jeuxFestival.post('/update-zone/:suivJ_id', (req, res) => {
                             suivJ_id: req.sanitize(req.params.suivJ_id)
                         }
                     }
-                ).then(()=>{
+                ).then(() => {
                     res.json({success: "zone changée!"})
                 })
                     .catch((err) => {
@@ -129,7 +165,7 @@ jeuxFestival.post('/update-zone/:suivJ_id', (req, res) => {
 })
 
 //changer placé sur le plan
-jeuxFestival.post('/update-place/:suivJ_id', (req,res) => {
+jeuxFestival.post('/update-place/:suivJ_id', (req, res) => {
     SuiviJeu.findOne({
         where: {
             suivJ_id: req.sanitize(req.params.suivJ_id)
@@ -149,7 +185,7 @@ jeuxFestival.post('/update-place/:suivJ_id', (req,res) => {
                             suivJ_id: req.sanitize(req.params.suivJ_id)
                         }
                     }
-                ).then(()=>{
+                ).then(() => {
                     res.json({success: "Placé changé!"})
                 })
                     .catch((err) => {
@@ -163,7 +199,7 @@ jeuxFestival.post('/update-place/:suivJ_id', (req,res) => {
 })
 
 //changer jeu tombola
-jeuxFestival.post('/update-tombola/:suivJ_id', (req,res) => {
+jeuxFestival.post('/update-tombola/:suivJ_id', (req, res) => {
     SuiviJeu.findOne({
         where: {
             suivJ_id: req.sanitize(req.params.suivJ_id)
@@ -184,7 +220,7 @@ jeuxFestival.post('/update-tombola/:suivJ_id', (req,res) => {
                             suivJ_id: req.sanitize(req.params.suivJ_id)
                         }
                     }
-                ).then(()=>{
+                ).then(() => {
                     res.json({success: "Tombola changé!"})
                 })
                     .catch((err) => {
@@ -198,7 +234,7 @@ jeuxFestival.post('/update-tombola/:suivJ_id', (req,res) => {
 })
 
 //changer dotation
-jeuxFestival.post('/update-dotation/:suivJ_id', (req,res) => {
+jeuxFestival.post('/update-dotation/:suivJ_id', (req, res) => {
     SuiviJeu.findOne({
         where: {
             suivJ_id: req.sanitize(req.params.suivJ_id)
@@ -219,7 +255,7 @@ jeuxFestival.post('/update-dotation/:suivJ_id', (req,res) => {
                             suivJ_id: req.sanitize(req.params.suivJ_id)
                         }
                     }
-                ).then(()=>{
+                ).then(() => {
                     res.json({success: "Dotation changé!"})
                 })
                     .catch((err) => {
@@ -233,7 +269,7 @@ jeuxFestival.post('/update-dotation/:suivJ_id', (req,res) => {
 })
 
 //update nb jeux reçus
-jeuxFestival.post('/update-nbJeuxRecus/:suivJ_id', (req,res) => {
+jeuxFestival.post('/update-nbJeuxRecus/:suivJ_id', (req, res) => {
     SuiviJeu.findOne({
         where: {
             suivJ_id: req.sanitize(req.params.suivJ_id)
@@ -254,7 +290,7 @@ jeuxFestival.post('/update-nbJeuxRecus/:suivJ_id', (req,res) => {
                             suivJ_id: req.sanitize(req.params.suivJ_id)
                         }
                     }
-                ).then(()=>{
+                ).then(() => {
                     res.json({success: "Nombre de jeux reçus changé!"})
                 })
                     .catch((err) => {
@@ -268,7 +304,7 @@ jeuxFestival.post('/update-nbJeuxRecus/:suivJ_id', (req,res) => {
 })
 
 //update nb jeux exposés
-jeuxFestival.post('/update-nbJeuxExposes/:suivJ_id', (req,res) => {
+jeuxFestival.post('/update-nbJeuxExposes/:suivJ_id', (req, res) => {
     SuiviJeu.findOne({
         where: {
             suivJ_id: req.sanitize(req.params.suivJ_id)
@@ -289,7 +325,7 @@ jeuxFestival.post('/update-nbJeuxExposes/:suivJ_id', (req,res) => {
                             suivJ_id: req.sanitize(req.params.suivJ_id)
                         }
                     }
-                ).then(()=>{
+                ).then(() => {
                     res.json({success: "Nombre de jeux exposés changé!"})
                 })
                     .catch((err) => {
@@ -303,7 +339,7 @@ jeuxFestival.post('/update-nbJeuxExposes/:suivJ_id', (req,res) => {
 })
 
 //changer recu
-jeuxFestival.post('/update-recu/:suivJ_id', (req,res) => {
+jeuxFestival.post('/update-recu/:suivJ_id', (req, res) => {
     SuiviJeu.findOne({
         where: {
             suivJ_id: req.sanitize(req.params.suivJ_id)
@@ -338,7 +374,7 @@ jeuxFestival.post('/update-recu/:suivJ_id', (req,res) => {
 })
 
 //changer a renvoyer
-jeuxFestival.post('/update-aRenvoyer/:suivJ_id', (req,res) => {
+jeuxFestival.post('/update-aRenvoyer/:suivJ_id', (req, res) => {
     SuiviJeu.findOne({
         where: {
             suivJ_id: req.sanitize(req.params.suivJ_id)
@@ -373,7 +409,7 @@ jeuxFestival.post('/update-aRenvoyer/:suivJ_id', (req,res) => {
 })
 
 //changer renvoyé
-jeuxFestival.post('/update-renvoye/:suivJ_id', (req,res) => {
+jeuxFestival.post('/update-renvoye/:suivJ_id', (req, res) => {
     SuiviJeu.findOne({
         where: {
             suivJ_id: req.sanitize(req.params.suivJ_id)
