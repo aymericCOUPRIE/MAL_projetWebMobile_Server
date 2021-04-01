@@ -2,7 +2,8 @@ const Sequelize = require('sequelize')
 const db = require('../database/db')
 const express = require("express");
 const localisations = express.Router();
-const Localisation = require('../models/Localisation')
+const Localisation = require('../models/Localisation');
+const Espace = require('../models/Espace');
 
 /**
  * Method which create a new localisation from the card of an existed festival
@@ -89,5 +90,34 @@ localisations.put("/updatePriceM2", (req, res) => {
     })
 })
 
+
+//récupérer les espaces réservés par un exposant
+/**
+ * Method which get all the localisations for a festival
+ */
+localisations.get("/:fes_id/allEspace/reservation/:res_id", (req, res) => {
+    Localisation.findAll({
+        where: {
+            fes_id: req.sanitize(req.params.fes_id)
+        },
+        include : [{
+            model: Espace,
+            where: {
+                res_id: req.sanitize(req.params.res_id)
+            }
+
+        }]
+    })
+        .then((espaces) => {
+            if (!espaces) {
+                res.json({error: "There is no espace for this festival and  this reservation"});
+            } else {
+                res.json(espaces);
+            }
+        })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+});
 
 module.exports = localisations;
