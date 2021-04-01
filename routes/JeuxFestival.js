@@ -35,6 +35,7 @@ jeuxFestival.get('/:fes_id/allDetails', (req, res) => {
             {
                 model: Reservation,
                 attributes: ["res_envoiDebut"],
+                required : true,
                 include: [
                     {
                         model: Societe, //exposant

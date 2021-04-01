@@ -2,7 +2,7 @@ const express = require("express");
 const reservations = express.Router();
 
 const db = require('../database/db')
-const sequelize = require("sequelize")
+const Sequelize = require("sequelize")
 
 const Reservation = require("../models/Reservation")
 const SuiviExposant = require("../models/Suivi_exposant")
@@ -67,7 +67,8 @@ reservations.put('/updateReservationFacture', (req, res) => {
 
     Reservation.update(
         {
-            res_facture: parseInt(req.sanitize(req.body.res_facture))
+            res_facture: parseInt(req.sanitize(req.body.res_facture)),
+            res_dateFacturation: Sequelize.literal('NOW()')
         },
         {
             where: {
@@ -77,7 +78,26 @@ reservations.put('/updateReservationFacture', (req, res) => {
     ).then((response) => {
         res.send({message: "Update réussi avec succès"})
     }).catch((err) => {
-        console.log(err)
+        res.json({error: err});
+    })
+})
+
+//changer la date de facturation
+reservations.put('/updateDateFacturation', (req, res) => {
+
+    Reservation.update(
+        {
+            res_dateFacturation: req.sanitize(req.body.res_dateFacturation)
+        },
+        {
+            where: {
+                res_id: parseInt(req.sanitize(req.body.res_id))
+            }
+        }
+    ).then((response) => {
+        res.send({message: "Update réussi avec succès"})
+    }).catch((err) => {
+        res.json({error: err});
     })
 })
 
@@ -94,10 +114,10 @@ reservations.put('/updateReservationLocalisation', (req, res) => {
             }
         }
     ).then((response) => {
-        console.log("REPSONSE", response)
+
         res.send({message: "Update réussi avec succès"})
     }).catch((err) => {
-        console.log(err)
+        res.json({error: err});
     })
 })
 
@@ -105,7 +125,8 @@ reservations.put('/updateReservationPaiement', (req, res) => {
 
     Reservation.update(
         {
-            res_paiement: parseInt(req.sanitize(req.body.res_paiement))
+            res_paiement: parseInt(req.sanitize(req.body.res_paiement)),
+            res_datePaiement: Sequelize.literal('NOW()')
         },
         {
             where: {
@@ -115,7 +136,26 @@ reservations.put('/updateReservationPaiement', (req, res) => {
     ).then((response) => {
         res.send({message: "Update réussi avec succès"})
     }).catch((err) => {
-        console.log(err)
+        res.json({error: err});
+    })
+})
+
+//update date paiement
+reservations.put('/updateDatePaiement', (req, res) => {
+
+    Reservation.update(
+        {
+            res_datePaiement: req.sanitize(req.body.res_datePaiement)
+        },
+        {
+            where: {
+                res_id: parseInt(req.sanitize(req.body.res_id))
+            }
+        }
+    ).then((response) => {
+        res.send({message: "Update réussi avec succès"})
+    }).catch((err) => {
+        res.json({error: err});
     })
 })
 
@@ -134,14 +174,13 @@ reservations.put('/updateReservationPrixRetour', (req, res) => {
     ).then((response) => {
         res.send({message: "Update réussi avec succès"})
     }).catch((err) => {
-        console.log(err)
+        res.json({error: err});
     })
 })
 
 
 reservations.put('/updateReservationPrixNegocie', (req, res) => {
 
-    console.log("REQ BODY", req.body)
 
     Reservation.update(
         {
@@ -155,7 +194,47 @@ reservations.put('/updateReservationPrixNegocie', (req, res) => {
     ).then((response) => {
         res.send({message: "Update réussi avec succès"})
     }).catch((err) => {
-        console.log(err)
+        res.json({error: err});
+    })
+})
+
+//update envoie jeux début
+reservations.put('/updateEnvoieJeuxDebut', (req, res) => {
+
+
+    Reservation.update(
+        {
+            res_envoiDebut: parseInt(req.sanitize(req.body.res_envoiDebut))
+        },
+        {
+            where: {
+                res_id: parseInt(req.sanitize(req.body.res_id))
+            }
+        }
+    ).then((response) => {
+        res.send({message: "Update réussi avec succès"})
+    }).catch((err) => {
+        res.json({error: err});
+    })
+})
+
+//update prix retour
+reservations.put('/updatePrixRetour', (req, res) => {
+
+
+    Reservation.update(
+        {
+            res_prixRetour: req.sanitize(req.body.res_prixRetour)
+        },
+        {
+            where: {
+                res_id: parseInt(req.sanitize(req.body.res_id))
+            }
+        }
+    ).then((response) => {
+        res.send({message: "Update réussi avec succès"})
+    }).catch((err) => {
+        res.json({error: err});
     })
 })
 
