@@ -15,9 +15,6 @@ const Festival = db.sequelize.define(
         },
         fes_date: {
             type: Sequelize.DATEONLY
-        },
-        fes_nbTables: {
-            type: Sequelize.FLOAT
         }
     },
     {

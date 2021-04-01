@@ -31,7 +31,6 @@ festivals.post('/add', (req, res) => {
         if (!festival) {
             const festivalData = {
                 fes_date: req.sanitize(req.body.fes_date),
-                fes_nbTables: req.sanitize(req.body.fes_nbTables)
             }
             Festival.create(festivalData)
                 .then((fes) => {
