@@ -2,7 +2,7 @@ const express = require("express");
 const reservations = express.Router();
 
 const db = require('../database/db')
-const sequelize = require("sequelize")
+const Sequelize = require("sequelize")
 
 const Reservation = require("../models/Reservation")
 const SuiviExposant = require("../models/Suivi_exposant")
@@ -67,7 +67,8 @@ reservations.put('/updateReservationFacture', (req, res) => {
 
     Reservation.update(
         {
-            res_facture: parseInt(req.sanitize(req.body.res_facture))
+            res_facture: parseInt(req.sanitize(req.body.res_facture)),
+            res_dateFacturation: Sequelize.literal('NOW()')
         },
         {
             where: {
@@ -105,7 +106,8 @@ reservations.put('/updateReservationPaiement', (req, res) => {
 
     Reservation.update(
         {
-            res_paiement: parseInt(req.sanitize(req.body.res_paiement))
+            res_paiement: parseInt(req.sanitize(req.body.res_paiement)),
+            res_datePaiement: Sequelize.literal('NOW()')
         },
         {
             where: {
