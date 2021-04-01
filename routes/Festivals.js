@@ -354,7 +354,7 @@ festivals.get("/gameByEditor", ((req, res) => {
         if (festi) {
             db.sequelize
                 .query(
-                    "SELECT s.soc_nom as nomEditeur, j.* FROM festival AS fes INNER JOIN role_festival rf ON rf.fes_id = fes.fes_id INNER JOIN reservation resa ON resa.fes_id = fes.fes_id AND resa.soc_id = rf.soc_id INNER JOIN suivi_jeu suivi ON suivi.res_id = resa.res_id INNER JOIN jeu j ON j.j_id = suivi.j_id INNER JOIN societe s ON j.soc_id = s.soc_id WHERE fes.fes_id = " + festi.dataValues.fes_id + " AND rf.rolF_estEditeur = 1 ORDER BY s.soc_id",
+                    "SELECT s.soc_nom as nomEditeur, j.*, tj.typJ_libelle as type_jeu FROM festival AS fes INNER JOIN role_festival rf ON rf.fes_id = fes.fes_id INNER JOIN reservation resa ON resa.fes_id = fes.fes_id AND resa.soc_id = rf.soc_id INNER JOIN suivi_jeu suivi ON suivi.res_id = resa.res_id INNER JOIN jeu j ON j.j_id = suivi.j_id INNER JOIN type_jeu tj ON j.typJ_id = tj.typJ_id INNER JOIN societe s ON j.soc_id = s.soc_id WHERE fes.fes_id = " + festi.dataValues.fes_id + " AND rf.rolF_estEditeur = 1 ORDER BY s.soc_id",
                     {
                         type: QueryTypes.SELECT,
                         raw: false
