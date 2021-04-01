@@ -12,6 +12,13 @@ const Zone = db.sequelize.define(
         },
         zo_libelle : {
             type: Sequelize.STRING(100)
+        },
+        fes_id: { // foreign key
+            type: Sequelize.INTEGER,
+            references: {
+                model: "festival",
+                key: "fes_id"
+            }
         }
     },
     {
