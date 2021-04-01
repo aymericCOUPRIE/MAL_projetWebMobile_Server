@@ -227,9 +227,8 @@ festivals.get("/allInfosNextFestival", ((req, res) => {
 }))
 
 festivals.get("/affichageExposant/:fes_id", (req, res) => {
-
     Festival.findAll({
-            attributes: ["fes_date"],
+            attributes: ["fes_date", "fes_id"],
             order: [["fes_date", "ASC"]],
             where: {
                 fes_date: {
@@ -297,6 +296,7 @@ festivals.put("/updateDate", (req, res) => {
     })
 })
 
+/*
 // to update the number of tables of the festival
 festivals.put("/updateNbTables", (req, res) => {
     Festival.update(
@@ -312,34 +312,12 @@ festivals.put("/updateNbTables", (req, res) => {
         res.send({message: 'Le nombre de tables pour le festival a été modifié.'})
     })
 })
+*/
+
 
 /* request for mobile
-    to get the list  of the game exhibited at the current festival in parameter
+    to get the list  of the game exhibited at the current festival
  */
-/*
-festivals.get("/gameByEditor/:fes_id", ((req, res) => {
-    const fesid = req.sanitize(req.params.fes_id);
-    db.sequelize
-        .query(
-            "SELECT s.soc_nom as nomEditeur, j.j_id as idJeu FROM festival AS fes INNER JOIN role_festival rf ON rf.fes_id = fes.fes_id INNER JOIN reservation resa ON resa.fes_id = fes.fes_id AND resa.soc_id = rf.soc_id INNER JOIN suivi_jeu suivi ON suivi.res_id = resa.res_id INNER JOIN jeu j ON j.j_id = suivi.j_id INNER JOIN societe s ON j.soc_id = s.soc_id WHERE fes.fes_id = " + fesid + " AND rf.rolF_estEditeur = 1 ORDER BY s.soc_id",
-            {
-                type: QueryTypes.SELECT,
-                raw: false
-            }
-        )
-        .then((liste) => {
-
-            if (liste) {
-                res.json(liste);
-            } else {
-                res.send("Il y a rien pour ce festival..");
-            }
-        })
-        .catch((err) => {
-            res.send("error: " + err);
-        });
-}))*/
-
 festivals.get("/gameByEditor", ((req, res) => {
     Festival.findOne({
         attributes: ["fes_date", "fes_id"],
@@ -382,6 +360,7 @@ festivals.get("/gameByEditor", ((req, res) => {
 }))
 
 /*
+// gameByEditor with sequelize
 festivals.get("/gameByEditor", ((req, res) => {
     Festival.findOne({
         attributes: ["fes_date", "fes_id"],
@@ -439,6 +418,7 @@ festivals.get("/gameByEditor", ((req, res) => {
 }))
 */
 
+
 //TODO changer la route  /:fes_id/details
 //festival by id
 festivals.get("/:fes_id", (req, res) => {
@@ -458,23 +438,6 @@ festivals.get("/:fes_id", (req, res) => {
         res.send("error: " + err);
     });
 })
-
-/*festivals.get("/:fes_date", (req, res) => {
-Festival.findOne(
-{
-where: {fes_date: req.sanitize(req.params.fes_date)}
-}
-).then((festival) => {
-if (!festival) {
-res.json({error: "Aucun festival ne correspond à cette date"});
-} else {
-res.json({festivalFromDate: festival});
-}
-}).catch((err) => {
-res.send("error: " + err);
-});
-});*/
-
 
 
 

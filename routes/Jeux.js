@@ -54,6 +54,7 @@ jeux.get('/allDetails', (req,res) => {
         include: [{
             model: TypeJeu,
             attributes: ["typJ_libelle"]
+            //required: true --> INNER JOIN
         }, {
             model: Societe,
             attributes: ["soc_nom"]
