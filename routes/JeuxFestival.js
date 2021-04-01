@@ -469,4 +469,27 @@ jeuxFestival.post('/update-renvoye/:suivJ_id', (req, res) => {
         });
 })
 
+
+//récupérer toutes le suivi des jeux avec leur zone d'une reservation
+jeuxFestival.get("/reservation/:res_id", (req,res) => {
+    SuiviJeu.findAll({
+        where: {
+        res_id: req.sanitize(req.params.res_id)
+    },
+    include : [{
+        model: Zone
+    }]
+})
+    .then((games) => {
+        if (!games) {
+            res.json({error: "There no games for this reservation"});
+        } else {
+            res.json(games);
+        }
+    })
+    .catch((err) => {
+        res.send("error: " + err);
+    });
+})
+
 module.exports = jeuxFestival
