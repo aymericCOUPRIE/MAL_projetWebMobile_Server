@@ -226,6 +226,39 @@ festivals.get("/allInfosNextFestival", ((req, res) => {
     });
 }))
 
+festivals.get("/affichageEditeur/:fes_id", (req, res) => {
+
+    Festival.findAll({
+        attributes: ["fes_date"],
+        order: [["fes_date", "ASC"]],
+        where: {
+            fes_date: {
+                [Op.gte]: Sequelize.literal('NOW()'),
+            }
+        },
+        limit: 1,
+        required: true,
+        include: [
+            {
+                model: Societe,
+                include: [
+                    {
+                        model: Jeu,
+                    }
+                ]
+            }
+        ]
+    }).then((result) => {
+        if(result) {
+            res.json(result)
+        }else {
+            res.send({message: "ERROR"})
+        }
+    })
+
+})
+
+
 festivals.get("/affichageExposant/:fes_id", (req, res) => {
 
     Festival.findAll({
