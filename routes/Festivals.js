@@ -329,9 +329,13 @@ festivals.get("/affichageExposant/:fes_id", (req, res) => {
                 {
                     model: Societe,
                     through: {
-                        attributes: [],
                         where: {
-                            rolF_estExposant: true,
+                            rolF_estExposant: {
+                                [Op.eq]: 1
+                            },
+                            fes_id: {
+                                [Op.eq]: 1
+                            },
                         }
                     },
                     include: [
@@ -340,6 +344,7 @@ festivals.get("/affichageExposant/:fes_id", (req, res) => {
                         },
                         {
                             model: Reservation,
+
                             include: [
                                 {
                                     model: Espace,
@@ -356,12 +361,12 @@ festivals.get("/affichageExposant/:fes_id", (req, res) => {
                             limite: 3
                         }
                     ]
+
                 }
             ]
         }
     ).then((result) => {
         if (result) {
-            console.log("RESULT", result)
             res.json(result)
         } else {
             res.send({message: "error"})
