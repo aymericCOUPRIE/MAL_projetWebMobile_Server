@@ -204,16 +204,16 @@ reservations.put('/updatePrixRetour', (req, res) => {
 })
 
 
-reservations.post("/addWithZone", (req, res) => {
+reservations.post("/add", (req, res) => {
 
     Reservation.create({
-        soc_id: 1,
-        fes_id: 3,
+        soc_id: req.sanitize(req.body.soc_id),
+        fes_id: req.sanitize(req.body.fes_id),
     }).then((result) => {
         if (result) {
             Localisation.findAll({
                 where: {
-                    fes_id: 1
+                    fes_id: req.sanitize(req.body.fes_id)
                 }
             }).then((res) => {
                 res.forEach((e) => {
@@ -221,11 +221,11 @@ reservations.post("/addWithZone", (req, res) => {
                         esp_qte: 0,
                         loc_id: e.dataValues.loc_id,
                         res_id: result.dataValues.res_id,
-                        esp_enTables: 0
+                        esp_enTables: 1
                     })
                 })
             }).then((response) => {
-                res.json({ message: "Succes" })
+                res.json({ message: "Réservation et ses espaces initialisés !" })
             })
         }
     })
@@ -245,7 +245,9 @@ reservations.put('/updateReservationFacture', (req, res) => {
     })
 })
             /*
-            reservations.post("/addDefault", (req,res) => {
+            //creer une réservation
+
+    reservations.post("/addDefault", (req,res) => {
 
                 const dataReservation = {
                     fes_id: req.sanitize(req.body.fes_id),

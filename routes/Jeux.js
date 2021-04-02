@@ -270,4 +270,23 @@ jeux.post("/:j_id/update-editeurId", (req, res) => {
         });
 })
 
+//tous les noms de jeux avec leur ID
+jeux.get('/allTitres', (req,res) => {
+    Jeu.findAll({
+        order: [["j_titre", "ASC"]],
+        attributes: ["j_id","j_titre"]
+    })
+    .then((jeux) => {
+
+        if (jeux) {
+            res.json(jeux);
+        } else {
+            res.send("Il n'y a pas de jeux");
+        }
+    })
+        .catch((err) => {
+            res.send("error: " + err);
+        });
+})
+
 module.exports = jeux;

@@ -26,8 +26,7 @@ espaces.put('/updateQte', (req,res) => {
 
 //modifier une enTables espace
 espaces.put('/updateEnTables', (req,res) => {
-    console.log("TABLEEEE",req.body.esp_enTables)
-    console.log("IDDD",req.body.esp_id)
+
     Espace.update(
         {
             esp_enTables: parseInt(req.sanitize(req.body.esp_enTables))
