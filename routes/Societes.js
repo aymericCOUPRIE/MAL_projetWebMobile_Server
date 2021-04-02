@@ -145,6 +145,7 @@ societes.post("/add/:fes_id", (req, res) => {
                         soc_nom: req.sanitize(req.body.soc_nom),
                         soc_ville: req.sanitize(req.body.soc_ville),
                         soc_rue: req.sanitize(req.body.soc_rue),
+                        soc_estInactif: 0,
                         soc_codePostal: req.sanitize(req.body.soc_codePostal),
                         soc_pays: req.sanitize(req.body.soc_pays)
                     }
@@ -157,24 +158,26 @@ societes.post("/add/:fes_id", (req, res) => {
                                 soc_id: result.dataValues.soc_id,
                                 fes_id: req.params.fes_id
                             }
-                        ).then((result) => {
-                                res.send(result)
-                            }
                         )
 
                         SuiviExposant.create(
                             {
+                                suivE_benevole: false,
+                                suivE_nbBenevoles: 0,
+                                suivE_deplacement: 0,
+                                suivD_id: 8,
+                                fes_id: req.sanitize(req.params.fes_id),
+                                soc_id: result.dataValues.soc_id,
+                                suivE_commentaire: ""
 
                             }
-                        )
-
-                        res.send({message: result})
+                        ).then((result2) => {
+                            res.json(result)
+                        })
                     }
                 ).catch((err) => {
-                        res.send({message: "CREATE fail"})
-                    }
-                )
-
+                    res.send({message: "CREATE fail"})
+                })
             } else {
                 res.send({message: "Socete déjà existante"})
             }
