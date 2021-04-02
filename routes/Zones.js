@@ -25,5 +25,4 @@ zones.get('/all/:fes_id', (req, res) => {
 })
 
 
-
 module.exports = zones

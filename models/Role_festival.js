@@ -36,6 +36,6 @@ const Role_festival = db.sequelize.define(
 )
 
 //REQUIRED when there no primary key to the table
-Role_festival.removeAttribute   ('id')
+//Role_festival.removeAttribute   ('id')
 
 module.exports = Role_festival;
