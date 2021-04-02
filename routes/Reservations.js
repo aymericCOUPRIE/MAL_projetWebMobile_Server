@@ -188,15 +188,8 @@ reservations.put('/updateEnvoieJeuxDebut', (req, res) => {
 })
 
 
-
-<<
-<<
-<<
-< HEAD
-//creer une reservation
-    ===
-    ===
-    =
+//changer le prix retour
+reservations.put('/updatePrixRetour', (req, res) => {
     Reservation.update({
         res_prixRetour: req.sanitize(req.body.res_prixRetour)
     }, {
@@ -239,18 +232,18 @@ reservations.post("/addWithZone", (req, res) => {
 })
 
 reservations.put('/updateReservationFacture', (req, res) => {
-            reservations.post("/add", (req, res) => {
-                Reservation.create(req.body, {
-                        include: [Espace]
-                    })
-                    .then((response) => {
-                        res.send(response)
-                    }).catch((err) => {
-                        res.json({ error: err });
-                    })
+    reservations.post("/add", (req, res) => {
+        Reservation.create(req.body, {
+            include: [Espace]
+        })
+            .then((response) => {
+                res.send(response)
+            }).catch((err) => {
+            res.json({error: err});
+        })
 
-            })
-
+    })
+})
             /*
             reservations.post("/addDefault", (req,res) => {
 
@@ -259,9 +252,7 @@ reservations.put('/updateReservationFacture', (req, res) => {
                     soc_id: req.sanitize(req.body.soc_id)
                 }
                 Reservation.create(dataReservation, {
-                    include: [Espace],
-
-            <<<<<<< HEAD
+                    include: [Espace]
                 })
                     .then((response) => {
                     res.send(response)
@@ -271,4 +262,4 @@ reservations.put('/updateReservationFacture', (req, res) => {
             })
             */
 
-            module.exports = reservations;
+module.exports = reservations;
