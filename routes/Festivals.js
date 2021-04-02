@@ -34,75 +34,91 @@ festivals.post('/add', (req, res) => {
             fes_date: req.sanitize(req.body.fes_date),
         },
     }).then((festival) => {
+
         if (!festival) {
             const festivalData = {
                 fes_date: req.sanitize(req.body.fes_date),
             }
             Festival.create(festivalData)
                 .then((fes) => {
-                    //res.json({success: "Festival créé avec succès !"})
-                    // Zone creation
-                    const zoneData = {
-                        zo_libelle: "Zone - Zone indéfinie",
-                        fes_id: fes.fes_id
-                    }
-                    Zone.create(zoneData)
-                    // Role_festival creation
-                    Festival.findAll({
-                        order: [["fes_date", "ASC"]],
-                        where: {
-                            fes_date: {
-                                [Op.gte]: Sequelize.literal('NOW()'),
-                            }
-                        },
-                        limit: 1,
-                        include: [
+
+                        //res.json({success: "Festival créé avec succès !"})
+                        // Zone creation
+
+                        Localisation.create(
                             {
-                                model: RoleFestival
+                                loc_prixTable: 100,
+                                loc_prixM2: 25,
+                                loc_libelle: "Localisation default",
+                                fes_id: fes.fes_id
                             }
-                        ]
-                    })
-                        .then((roleFestList) => {
-                            roleFestList[0].dataValues.role_festivals.forEach(e => {
-                                RoleFestival.create(
-                                    {
-                                        rolF_estExposant: e.dataValues.rolF_estExposant,
-                                        rolF_estEditeur: e.dataValues.rolF_estEditeur,
-                                        soc_id: e.dataValues.soc_id,
-                                        fes_id: fes.fes_id
+                        )
+
+                        const zoneData = {
+                            zo_libelle: "Zone - Zone indéfinie",
+                            fes_id: fes.fes_id
+                        }
+
+
+                        Zone.create(zoneData).then((response) => {
+                            Festival.findAll({
+                                order: [["fes_date", "DESC"]],
+                                where: {
+                                    fes_date: {
+                                        [Op.lte]: Sequelize.literal('NOW()'),
                                     }
-                                )
+                                },
+                                limit: 1,
+                                include: [
+                                    {
+                                        model: RoleFestival
+                                    }
+                                ]
+                            }).then((roleFestList) => {
+                                roleFestList[0].dataValues.role_festivals.forEach((e) => {
+                                    RoleFestival.create(
+                                        {
+                                            rolF_estExposant: e.dataValues.rolF_estExposant,
+                                            rolF_estEditeur: e.dataValues.rolF_estEditeur,
+                                            soc_id: e.dataValues.soc_id,
+                                            fes_id: fes.fes_id
+                                        }
+                                    )
+                                })
+
+
+                                Festival.findAll({
+                                    order: [["fes_date", "DESC"]],
+                                    where: {
+                                        fes_date: {
+                                            [Op.lte]: Sequelize.literal('NOW()'),
+                                        }
+                                    },
+                                    limit: 1,
+                                    include: [{
+                                        model: SuiviExposant
+                                    }]
+                                }).then((suiviExpList) => {
+                                    console.log("RESULT SE", suiviExpList)
+
+                                    suiviExpList[0].dataValues.suivi_exposants.forEach(e => {
+                                        SuiviExposant.create(
+                                            {
+                                                suivE_benevole: 0,
+                                                suivE_nbBenevoles: 0,
+                                                suivE_deplacement: 0,
+                                                suivE_commentaire: "",
+                                                suivD_id: 8,
+                                                soc_id: e.dataValues.soc_id,
+                                                fes_id: fes.fes_id
+                                            }
+                                        )
+                                    })
+                                })
                             })
                         })
-                    // Suivi_exposant creation
-                    Festival.findAll({
-                        order: [["fes_date", "ASC"]],
-                        where: {
-                            fes_date: {
-                                [Op.gte]: Sequelize.literal('NOW()'),
-                            }
-                        },
-                        limit: 1,
-                        include: [{
-                            model: SuiviExposant
-                        }]
-                    })
-                        .then((suiviExpList) => {
-                            suiviExpList[0].dataValues.suivi_exposants.forEach(e => {
-                                SuiviExposant.create(
-                                    {
-                                        suivE_benevole: 0,
-                                        suivE_nbBenevoles: 0,
-                                        suivE_deplacement: 0,
-                                        suivE_commentaire: "",
-                                        suivD_id: 8,
-                                        soc_id: e.dataValues.soc_id,
-                                        fes_id: fes.fes_id
-                                    }
-                                )
-                            })
-                        })
-                })
+                    }
+                )
                 .catch((err) => {
                     res.json("error: " + err);
                 })
@@ -110,30 +126,25 @@ festivals.post('/add', (req, res) => {
             res.json({error: "Un festival existe déjà à cette date."});
         }
     })
-});
+})
+;
 
 festivals.get("/affichageRole/:fes_id", (req, res) => {
     Festival.findAll({
-            attributes: ["fes_date"],
-            order: [["fes_date", "ASC"]],
             where: {
-                fes_date: {
-                    [Op.gte]: Sequelize.literal('NOW()'),
-                }
+                fes_id: req.sanitize(req.params.fes_id),
             },
-            limit: 1,
             include: [
                 {
                     model: Societe,
                     through: {
                         attributes: ["rolF_estExposant", "rolF_estEditeur"]
                     }
-
                 }
-
             ]
         }
     ).then((result) => {
+        console.log("ROLES FESTIVALS", result)
         res.json(result)
     }).catch((err) => {
         console.log(err)
@@ -297,14 +308,9 @@ festivals.get("/allInfosNextFestival", ((req, res) => {
 festivals.get("/affichageEditeur/:fes_id", (req, res) => {
 
     Festival.findAll({
-        attributes: ["fes_date"],
-        order: [["fes_date", "ASC"]],
         where: {
-            fes_date: {
-                [Op.gte]: Sequelize.literal('NOW()'),
-            }
+            fes_id: req.sanitize(req.params.fes_id)
         },
-        limit: 1,
         required: true,
         include: [
             {
@@ -334,34 +340,26 @@ festivals.get("/affichageEditeur/:fes_id", (req, res) => {
 
 festivals.get("/affichageExposant/:fes_id", (req, res) => {
     Festival.findAll({
-            attributes: ["fes_date", "fes_id"],
-            order: [["fes_date", "ASC"]],
             where: {
-                fes_date: {
-                    [Op.gte]: Sequelize.literal('NOW()'),
-                }
+                fes_id: req.sanitize(req.params.fes_id)
             },
-            limit: 1,
             include: [
                 {
                     model: Societe,
                     through: {
                         where: {
-                            rolF_estExposant: {
-                                [Op.eq]: 1
-                            },
-                            fes_id: {
-                                [Op.eq]: 1
-                            },
+                            rolF_estExposant: 1
                         }
                     },
                     include: [
                         {
-                            model: SuiviExposant
+                            model: SuiviExposant,
+                            where: {
+                                fes_id: req.sanitize(req.params.fes_id)
+                            }
                         },
                         {
                             model: Reservation,
-
                             include: [
                                 {
                                     model: Espace,
@@ -384,6 +382,7 @@ festivals.get("/affichageExposant/:fes_id", (req, res) => {
         }
     ).then((result) => {
         if (result) {
+            console.log("EXPOSANTS", result)
             res.json(result)
         } else {
             res.send({message: "error"})
