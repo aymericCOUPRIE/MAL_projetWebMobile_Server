@@ -65,45 +65,45 @@ festivals.post('/add', (req, res) => {
                         ]
                     })
                         .then((roleFestList) => {
-                            //console.log("ROLEFEST", roleFestList[0].dataValues.role_festivals[1]);
-
                             roleFestList[0].dataValues.role_festivals.forEach(e => {
-                                console.log("DATAVLAUES", e.dataValues)
                                 RoleFestival.create(
                                     {
                                         rolF_estExposant: e.dataValues.rolF_estExposant,
                                         rolF_estEditeur: e.dataValues.rolF_estEditeur,
                                         soc_id: e.dataValues.soc_id,
-                                        fes_id: e.dataValues.fes_id
-                                    }
-                                )
-                            })
-                            /*(roleFestList[0].dataValues.role_festivals[0]).forEach((rf) => {
-                                RoleFestival.create(
-                                    {
-                                        rolF_estExposant: rf.rolF_estExposant,
-                                        rolF_estEditeur: rf.rolF_estEditeur,
-                                        soc_id: rf.soc_id,
                                         fes_id: fes.fes_id
                                     }
                                 )
-                            })*/
+                            })
                         })
                     // Suivi_exposant creation
-                    const suivisE = getAllSuiviExp(fes.fes_id);
-                    suivisE.forEach((se) => {
-                        SuiviExposant.create(
-                            {
-                                suivE_benevole: 0,
-                                suivE_nbBenevoles: 0,
-                                suivE_deplacement: 0,
-                                suivE_commentaire: "",
-                                suivD_id: 8,
-                                soc_id: se.soc_id,
-                                fes_id: fes.fes_id
+                    Festival.findAll({
+                        order: [["fes_date", "ASC"]],
+                        where: {
+                            fes_date: {
+                                [Op.gte]: Sequelize.literal('NOW()'),
                             }
-                        )
+                        },
+                        limit: 1,
+                        include: [{
+                            model: SuiviExposant
+                        }]
                     })
+                        .then((suiviExpList) => {
+                            suiviExpList[0].dataValues.suivi_exposants.forEach(e => {
+                                SuiviExposant.create(
+                                    {
+                                        suivE_benevole: 0,
+                                        suivE_nbBenevoles: 0,
+                                        suivE_deplacement: 0,
+                                        suivE_commentaire: "",
+                                        suivD_id: 8,
+                                        soc_id: e.dataValues.soc_id,
+                                        fes_id: fes.fes_id
+                                    }
+                                )
+                            })
+                        })
                 })
                 .catch((err) => {
                     res.json("error: " + err);
