@@ -311,6 +311,11 @@ festivals.get("/affichageEditeur/:fes_id", (req, res) => {
         include: [
             {
                 model: Societe,
+                through: {
+                    where: {
+                        rolF_estEditeur: 1
+                    }
+                },
                 include: [
                     {
                         model: Jeu,
