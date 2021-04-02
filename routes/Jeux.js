@@ -6,6 +6,7 @@ const {QueryTypes} = require("sequelize");
 const Jeu = require("../models/Jeu")
 const TypeJeu = require('../models/Type_jeu')
 const Societe = require("../models/Societe")
+const SuiviJeu = require("../models/Suivi_jeu")
 
 //creer un jeu
 jeux.post('/add', (req,res) => {
@@ -270,23 +271,36 @@ jeux.post("/:j_id/update-editeurId", (req, res) => {
         });
 })
 
-//tous les noms de jeux avec leur ID
-jeux.get('/allTitres', (req,res) => {
-    Jeu.findAll({
-        order: [["j_titre", "ASC"]],
-        attributes: ["j_id","j_titre"]
-    })
-    .then((jeux) => {
+//tous les noms de jeux avec leur ID qui ne sont pas déjà dans la résa de l'exposant
+jeux.get('/allTitres/:res_id', (req,res) => {
+    SuiviJeu.findAll({
+        where: {
+            res_id: req.sanitize(req.param(res_id)),
 
-        if (jeux) {
-            res.json(jeux);
-        } else {
-            res.send("Il n'y a pas de jeux");
-        }
+        },
+        attributes: ["j_id","suivJ_id"]
+    }).then((suivis) => {
+        console.log("SUIVIIIII",suivis)
+
+        Jeu.findAll({
+            order: [["j_titre", "ASC"]],
+            attributes: ["j_id","j_titre"],
+
+        })
+            .then((jeux) => {
+
+                if (jeux) {
+                    res.json(jeux);
+                } else {
+                    res.send("Il n'y a pas de jeux");
+                }
+            })
+            .catch((err) => {
+                res.send("error: " + err);
+            });
     })
-        .catch((err) => {
-            res.send("error: " + err);
-        });
+
+
 })
 
 module.exports = jeux;

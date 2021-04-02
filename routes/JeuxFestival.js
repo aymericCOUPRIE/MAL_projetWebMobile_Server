@@ -492,4 +492,44 @@ jeuxFestival.get("/reservation/:res_id", (req,res) => {
     });
 })
 
+//ajouter un jeu à une résa
+jeuxFestival.post("/add/game/:j_id/reservation/:res_id", (req,res) => {
+    Zone.findOne({
+        where: {
+            fes_id: req.sanitize(req.body.fes_id),
+            zo_libelle : 'Zone - Zone indéfinie'
+        }
+    }).then((zone) => {
+        const suiviData = {
+            res_id : req.sanitize(req.param.res_id),
+            j_id: req.sanitize(req.param.j_id),
+            zo_id: zone.zo_id
+        }
+        SuiviJeu.create(suiviData)
+            .then( (game) => {
+                res.json({success: "Jeu ajouté avec succès!"})
+        }).catch((err) => {
+                res.json("error: " + err);
+            });
+    }).catch((err) => {
+        res.send("error: " + err);
+    })
+
+})
+
+/*
+ const dataReservation = {
+                    fes_id: req.sanitize(req.body.fes_id),
+                    soc_id: req.sanitize(req.body.soc_id)
+                }
+                Reservation.create(dataReservation, {
+                    include: [Espace]
+                })
+                    .then((response) => {
+                    res.send(response)
+                }).catch((err) => {
+                    res.json({error: err});
+                })
+            })
+ */
 module.exports = jeuxFestival
