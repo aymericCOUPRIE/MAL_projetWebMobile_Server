@@ -19,8 +19,6 @@ const SuiviExposant = require('../models/Suivi_exposant')
 const Contact = require('../models/Contact')
 const Espace = require('../models/Espace')
 const Localisation = require('../models/Localisation')
-//const getAllRoleFest = require("../utils/RoleFestival");
-//const getAllSuiviExp = require("../utils/SuiviExposant");
 const {Op} = require('sequelize')
 
 
