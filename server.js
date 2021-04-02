@@ -59,6 +59,7 @@ app.use('/server/contacts', Contacts)
 const Localisation = require('./routes/Localisation')
 app.use('/server/localisation', Localisation)
 
+
 //deploiement
 app.use(express.static(path.join(__dirname, 'build')));
 app.get("/*", function (req, res) {

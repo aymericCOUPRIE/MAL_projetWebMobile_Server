@@ -1,3 +1,6 @@
+//import {getAllRoleFest} from "../utils/RoleFestival";
+//import {getAllSuiviExp} from "../utils/SuiviExposant";
+
 const Sequelize = require('sequelize')
 const db = require('../database/db')
 const {QueryTypes} = require("sequelize");
@@ -16,11 +19,16 @@ const SuiviExposant = require('../models/Suivi_exposant')
 const Contact = require('../models/Contact')
 const Espace = require('../models/Espace')
 const Localisation = require('../models/Localisation')
+const getAllRoleFest = require("../utils/RoleFestival");
+const getAllSuiviExp = require("../utils/SuiviExposant");
 const {Op} = require('sequelize')
 
 
 /**
- * Method which create a new festival
+ * Method which create a new festival and therefore :
+ * an undefined zone,
+ * all the role_festival for the existed societe,
+ * the suivi_exposant for the existed societe
  */
 festivals.post('/add', (req, res) => {
     Festival.findOne({
@@ -34,7 +42,54 @@ festivals.post('/add', (req, res) => {
             }
             Festival.create(festivalData)
                 .then((fes) => {
-                    res.json({success: "Festival créé avec succès !"})
+                    //res.json({success: "Festival créé avec succès !"})
+                    // Zone creation
+                    const zoneData = {
+                        zo_libelle: "Zone - Zone indéfinie",
+                        fes_id: fes.fes_id
+                    }
+                    Zone.create(zoneData)
+                    // Role_festival creation
+                    Festival.findAll({
+                        order: [["fes_date", "ASC"]],
+                        where: {
+                            fes_date: {
+                                [Op.gte]: Sequelize.literal('NOW()'),
+                            }
+                        },
+                        limit: 1,
+                        include: [{
+                            model: RoleFestival
+                        }]
+                    })
+                        .then((roleFestList) => {
+                            console.log("ROLEFEST", roleFestList[0].dataValues.role_festivals[1]);
+                            (roleFestList[0].dataValues.role_festivals[0]).forEach((rf) => {
+                                RoleFestival.create(
+                                    {
+                                        rolF_estExposant: rf.rolF_estExposant,
+                                        rolF_estEditeur: rf.rolF_estEditeur,
+                                        soc_id: rf.soc_id,
+                                        fes_id: fes.fes_id
+                                    }
+                                )
+                            })
+                        })
+                    // Suivi_exposant creation
+                    const suivisE = getAllSuiviExp(fes.fes_id);
+                    suivisE.forEach((se) => {
+                        RoleFestival.create(
+                            {
+                                suivE_benevole: 0,
+                                suivE_nbBenevoles: 0,
+                                suivE_deplacement: 0,
+                                suivE_commentaire: "",
+                                suivD_id: 8,
+                                soc_id: se.soc_id,
+                                fes_id: fes.fes_id
+                            }
+                        )
+                    })
                 })
                 .catch((err) => {
                     res.json("error: " + err);
@@ -116,9 +171,9 @@ festivals.get("/closest", (req, res) => {
 
 
 //toutes les zones d'un festival avec les jeux qu'il y a dedans
-festivals.get("/closest/gamesByZone", (req,res) => {
+festivals.get("/closest/gamesByZone", (req, res) => {
     Festival.findOne({
-        attributes: ["fes_date","fes_id"],
+        attributes: ["fes_date", "fes_id"],
         order: [["fes_date", "ASC"]],
         where: {
             fes_date: {
@@ -130,18 +185,20 @@ festivals.get("/closest/gamesByZone", (req,res) => {
             model: Zone,
             include: [{
                 model: SuiviJeu,
-                attributes: ["j_id","zo_id"],
-               include: [{
+                attributes: ["j_id", "zo_id"],
+                include: [{
                     model: Jeu,
-                   include: [{
-                       model: TypeJeu},
-                       {model: Societe,
-                           attributes: ["soc_nom"],
-                   }]
-               }]
+                    include: [{
+                        model: TypeJeu
+                    },
+                        {
+                            model: Societe,
+                            attributes: ["soc_nom"],
+                        }]
+                }]
             }]
         }]
-    }) .then((result) => {
+    }).then((result) => {
 
         if (result) {
             res.json(result);
@@ -248,9 +305,9 @@ festivals.get("/affichageEditeur/:fes_id", (req, res) => {
             }
         ]
     }).then((result) => {
-        if(result) {
+        if (result) {
             res.json(result)
-        }else {
+        } else {
             res.send({message: "ERROR"})
         }
     })
@@ -470,7 +527,6 @@ festivals.get("/:fes_id", (req, res) => {
         res.send("error: " + err);
     });
 })
-
 
 
 module.exports = festivals;
