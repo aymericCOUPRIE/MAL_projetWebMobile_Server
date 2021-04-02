@@ -19,8 +19,8 @@ const SuiviExposant = require('../models/Suivi_exposant')
 const Contact = require('../models/Contact')
 const Espace = require('../models/Espace')
 const Localisation = require('../models/Localisation')
-const getAllRoleFest = require("../utils/RoleFestival");
-const getAllSuiviExp = require("../utils/SuiviExposant");
+//const getAllRoleFest = require("../utils/RoleFestival");
+//const getAllSuiviExp = require("../utils/SuiviExposant");
 const {Op} = require('sequelize')
 
 
@@ -58,13 +58,27 @@ festivals.post('/add', (req, res) => {
                             }
                         },
                         limit: 1,
-                        include: [{
-                            model: RoleFestival
-                        }]
+                        include: [
+                            {
+                                model: RoleFestival
+                            }
+                        ]
                     })
                         .then((roleFestList) => {
-                            console.log("ROLEFEST", roleFestList[0].dataValues.role_festivals[1]);
-                            (roleFestList[0].dataValues.role_festivals[0]).forEach((rf) => {
+                            //console.log("ROLEFEST", roleFestList[0].dataValues.role_festivals[1]);
+
+                            roleFestList[0].dataValues.role_festivals.forEach(e => {
+                                console.log("DATAVLAUES", e.dataValues)
+                                RoleFestival.create(
+                                    {
+                                        rolF_estExposant: e.dataValues.rolF_estExposant,
+                                        rolF_estEditeur: e.dataValues.rolF_estEditeur,
+                                        soc_id: e.dataValues.soc_id,
+                                        fes_id: e.dataValues.fes_id
+                                    }
+                                )
+                            })
+                            /*(roleFestList[0].dataValues.role_festivals[0]).forEach((rf) => {
                                 RoleFestival.create(
                                     {
                                         rolF_estExposant: rf.rolF_estExposant,
@@ -73,12 +87,12 @@ festivals.post('/add', (req, res) => {
                                         fes_id: fes.fes_id
                                     }
                                 )
-                            })
+                            })*/
                         })
                     // Suivi_exposant creation
                     const suivisE = getAllSuiviExp(fes.fes_id);
                     suivisE.forEach((se) => {
-                        RoleFestival.create(
+                        SuiviExposant.create(
                             {
                                 suivE_benevole: 0,
                                 suivE_nbBenevoles: 0,
