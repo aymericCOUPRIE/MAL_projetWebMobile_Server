@@ -238,6 +238,41 @@ reservations.put('/updatePrixRetour', (req, res) => {
     })
 })
 
+
+reservations.post("/addWithZone", (req, res) => {
+
+    Reservation.create(
+        {
+            soc_id: 1,
+            fes_id: 3,
+        }
+    ).then((result) => {
+        if (result) {
+            Localisation.findAll(
+                {
+                    where: {
+                        fes_id: 1
+                    }
+                }
+            ).then((res) => {
+                res.forEach((e) => {
+                    Espace.create(
+                        {
+                            esp_qte: 0,
+                            loc_id: e.dataValues.loc_id,
+                            res_id: result.dataValues.res_id,
+                            esp_enTables: 0
+                        }
+                    )
+                })
+            }).then((response) => {
+                res.json({message: "Succes"})
+            })
+        }
+    })
+})
+
+
 reservations.post("/add", (req, res) => {
     Reservation.create(req.body, {
         include: [Espace]
@@ -249,7 +284,6 @@ reservations.post("/add", (req, res) => {
     })
 
 })
-
 
 
 module.exports = reservations;
