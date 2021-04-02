@@ -59,6 +59,9 @@ app.use('/server/contacts', Contacts)
 const Localisation = require('./routes/Localisation')
 app.use('/server/localisation', Localisation)
 
+const Espace = require('./routes/Espaces')
+app.use('/server/espace',Espace)
+
 //deploiement
 app.use(express.static(path.join(__dirname, 'build')));
 app.get("/*", function (req, res) {

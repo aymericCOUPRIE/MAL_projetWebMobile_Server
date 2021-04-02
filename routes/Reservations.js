@@ -218,26 +218,9 @@ reservations.put('/updateEnvoieJeuxDebut', (req, res) => {
     })
 })
 
-//update prix retour
-reservations.put('/updatePrixRetour', (req, res) => {
 
 
-    Reservation.update(
-        {
-            res_prixRetour: req.sanitize(req.body.res_prixRetour)
-        },
-        {
-            where: {
-                res_id: parseInt(req.sanitize(req.body.res_id))
-            }
-        }
-    ).then((response) => {
-        res.send({message: "Update réussi avec succès"})
-    }).catch((err) => {
-        res.json({error: err});
-    })
-})
-
+//creer une reservation
 reservations.post("/add", (req, res) => {
     Reservation.create(req.body, {
         include: [Espace]
@@ -250,6 +233,23 @@ reservations.post("/add", (req, res) => {
 
 })
 
+/*
+reservations.post("/addDefault", (req,res) => {
 
+    const dataReservation = {
+        fes_id: req.sanitize(req.body.fes_id),
+        soc_id: req.sanitize(req.body.soc_id)
+    }
+    Reservation.create(dataReservation, {
+        include: [Espace],
+
+    })
+        .then((response) => {
+        res.send(response)
+    }).catch((err) => {
+        res.json({error: err});
+    })
+})
+*/
 
 module.exports = reservations;
