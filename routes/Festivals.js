@@ -65,7 +65,7 @@ festivals.post('/add', (req, res) => {
                                 order: [["fes_date", "DESC"]],
                                 where: {
                                     fes_date: {
-                                        [Op.lte]: Sequelize.literal('NOW()'),
+                                        [Op.lte]: Sequelize.literal('NOW()'), //le festival précédent
                                     }
                                 },
                                 limit: 1,
