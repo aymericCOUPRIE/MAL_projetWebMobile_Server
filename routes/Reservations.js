@@ -238,6 +238,18 @@ reservations.put('/updatePrixRetour', (req, res) => {
     })
 })
 
+reservations.post("/add", (req, res) => {
+    Reservation.create(req.body, {
+        include: [Espace]
+    })
+        .then((response) => {
+            res.send(response)
+        }).catch((err) => {
+        res.json({error: err});
+    })
+
+})
+
 
 
 module.exports = reservations;

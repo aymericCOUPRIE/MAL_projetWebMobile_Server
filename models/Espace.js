@@ -42,10 +42,10 @@ Localisation.hasMany(Espace, {
     foreignKey: {name: "loc_id"},
 });
 
-Reservation.belongsTo(Espace, {
+Reservation.hasMany(Espace, {
     foreignKey: {name: "res_id"}, targetKey:"res_id",
 });
-Espace.hasOne(Reservation, {
+Espace.belongsTo(Reservation, {
     foreignKey: {name: "res_id"},
 });
 
