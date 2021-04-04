@@ -1,12 +1,23 @@
 ## Available Scripts
 
+First of all, you have to create a ".env" file in the root.
+Then copy the following code and replace the ... with the required information.
+If you don't have it, contact marine.teroitin@gmail.com.
+
+HOST=...
+DB_NAME=...
+DB_USER=...
+DB_PASSWORD=...
+
+SECRET_KEY = ...
+
 In the project directory, you can run:
 
-### `npm run start:dev`
+### npm run start:dev
 
 if you are in development mode.
 
-### `npm run start`
+### npm run start
 if you work with the hosted version of the server.
 
 ### Deployment
